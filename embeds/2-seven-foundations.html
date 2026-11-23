@@ -1,0 +1,922 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pause to Play · Homepage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500&display=swap">
+<style>
+/* The Still Hour, in Pause to Play's own hand: ivory paper, olive ink, sage, compass gold,
+   watercolour vignettes and botanical line art. Luxury through space, restraint and craft.
+   One committed light look in every theme, like a printed book. */
+:root{
+  color-scheme:light;
+  --ivory:#FBF9F4; --linen:#EFEAE1; --sand:#E4DCCD; --sage:#D9DBC9; --sage-2:#C6CAB0;
+  --ink:#38382A; --ink-soft:#5C5B4B; --rule:#DCD4C4;
+  --gold:#B8964F; --gold-ink:#7E632E;
+  --olive:#34362A; --on-olive:#F4EFE5; --on-olive-soft:#C9C4B2; --gold-on-olive:#D2B57A; --rule-olive:#4A4C3D;
+  --display:"EB Garamond", Garamond, "Times New Roman", serif;
+  --body:"Jost", "Futura", "Avenir Next", system-ui, sans-serif;
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --gut:max(20px, env(safe-area-inset-left, 0px));
+  --gut-r:max(20px, env(safe-area-inset-right, 0px));
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--ivory);color:var(--ink);font-family:var(--body);font-weight:300;font-size:18px;line-height:1.75;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--linen)}
+img{max-width:100%;height:auto;display:block}
+h1,h2,h3,h4{font-family:var(--display);font-weight:500;line-height:1.08;margin:0;text-wrap:balance;color:var(--ink);letter-spacing:-.01em}
+h1{font-size:clamp(3rem,7vw,5.8rem)}
+h2{font-size:clamp(2.2rem,4.6vw,3.6rem)}
+h3{font-size:clamp(1.6rem,2.4vw,2rem);line-height:1.15}
+h1 em,h2 em,h3 em{font-style:italic;font-weight:400;color:var(--gold-ink)}
+p{margin:0}
+b,strong{font-weight:500}
+a{color:inherit;text-decoration-color:var(--gold);text-decoration-thickness:1px;text-underline-offset:5px}
+:focus-visible{outline:1px solid var(--gold-ink);outline-offset:4px}
+.olive :focus-visible{outline-color:var(--gold-on-olive)}
+.skip{position:absolute;left:-999px;top:8px;z-index:100;background:var(--ink);color:var(--ivory);padding:10px 16px}
+.skip:focus{left:var(--gut)}
+.wrap{width:100%;max-width:1220px;margin-inline:auto;padding-left:var(--gut);padding-right:var(--gut-r)}
+.narrow{max-width:780px}
+.caps{font-family:var(--display);font-weight:500;font-size:.95rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gold-ink)}
+.olive .caps{color:var(--gold-on-olive)}
+.soft{color:var(--ink-soft)}
+.lede{font-size:clamp(1.12rem,1.6vw,1.28rem);line-height:1.7;color:var(--ink-soft);max-width:54ch}
+.olive{background:var(--olive);color:var(--on-olive)}
+.olive h1,.olive h2,.olive h3,.olive h4{color:var(--on-olive)}
+.olive h1 em,.olive h2 em,.olive h3 em{color:var(--gold-on-olive)}
+.olive .lede,.olive .soft{color:var(--on-olive-soft)}
+.linen{background:var(--linen)}
+
+/* botanical ornament (her divider, redrawn as line art) */
+.orn{display:flex;align-items:center;gap:16px;color:var(--gold)}
+.orn::before,.orn::after{content:"";height:1px;width:72px;background:var(--rule)}
+.orn svg{width:34px;height:20px}
+.orn.c{justify-content:center}
+.olive .orn::before,.olive .orn::after{background:var(--rule-olive)}
+
+/* pills, as on her site, refined */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;font-family:var(--body);font-weight:400;font-size:.98rem;letter-spacing:.06em;text-decoration:none;text-align:center;line-height:1.3;border:1px solid var(--sage-2);border-radius:999px;padding:15px 34px;background:var(--sage);color:var(--ink);cursor:pointer;transition:background .5s var(--ease),border-color .5s var(--ease),color .5s var(--ease)}
+.btn:hover{background:var(--ink);border-color:var(--ink);color:var(--ivory)}
+.btn::after{content:"›";font-size:1.2em;line-height:1;transition:transform .5s var(--ease)}
+.btn:hover::after{transform:translateX(4px)}
+.btn.plain::after{display:none}
+.btn.line{background:transparent;border-color:var(--ink)}
+.olive .btn{background:var(--gold-on-olive);border-color:var(--gold-on-olive);color:var(--olive)}
+.olive .btn:hover{background:transparent;color:var(--gold-on-olive)}
+.olive .btn.line{background:transparent;color:var(--on-olive);border-color:var(--on-olive-soft)}
+.link{font-family:var(--display);font-weight:500;font-size:.92rem;letter-spacing:.22em;text-transform:uppercase;text-decoration:none;color:var(--gold-ink);display:inline-flex;gap:12px;align-items:center}
+.link::after{content:"";width:28px;height:1px;background:currentColor;transition:width .5s var(--ease)}
+.link:hover::after{width:52px}
+.olive .link{color:var(--gold-on-olive)}
+
+/* ---------- header (her structure, more air) ---------- */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:rgba(239,234,225,.94);backdrop-filter:saturate(1.2) blur(8px);-webkit-backdrop-filter:saturate(1.2) blur(8px);border-bottom:1px solid var(--rule)}
+.top .wrap{display:flex;align-items:center;gap:22px;padding-block:14px}
+.logo{display:inline-flex;align-items:center;gap:12px;text-decoration:none;color:var(--ink);font-family:var(--display);font-weight:600;font-size:1.42rem;letter-spacing:-.005em;white-space:nowrap}
+.logo img{width:44px;height:44px}
+.nav{display:flex;gap:2px;margin-left:auto;align-items:center}
+.nav a{text-decoration:none;font-size:.95rem;padding:8px 11px;color:var(--ink);white-space:nowrap;border-bottom:1px solid transparent}
+.nav a:hover{color:var(--gold-ink)}
+.nav a[aria-current="page"]{border-bottom-color:var(--gold)}
+.top .btn{padding:11px 22px;font-size:.9rem;background:transparent;border-color:var(--ink)}
+.top .btn:hover{background:var(--ink)}
+.menu-btn{display:none;margin-left:auto;align-items:center;gap:12px;background:none;border:1px solid var(--ink);border-radius:999px;color:var(--ink);font-family:var(--body);font-size:.88rem;letter-spacing:.08em;cursor:pointer;padding:9px 18px}
+@media (max-width:1180px){.nav{display:none}.menu-btn{display:inline-flex}.top .cta{display:none}}
+@media (max-width:420px){.logo{font-size:1.2rem}.logo img{width:38px;height:38px}}
+
+/* full-screen menu */
+.menu{position:fixed;inset:0;z-index:70;background:var(--linen);overflow-y:auto;opacity:0;visibility:hidden;transition:opacity .6s var(--ease),visibility 0s linear .6s}
+.menu.open{opacity:1;visibility:visible;transition:opacity .6s var(--ease)}
+.menu .wrap{min-height:100%;display:grid;grid-template-rows:auto 1fr auto;gap:36px;padding-block:calc(14px + env(safe-area-inset-top,0px)) calc(32px + env(safe-area-inset-bottom,0px))}
+.menu .bar{display:flex;justify-content:space-between;align-items:center}
+.menu .close{background:none;border:1px solid var(--ink);border-radius:999px;color:var(--ink);font-family:var(--body);font-size:.88rem;letter-spacing:.08em;cursor:pointer;padding:9px 18px}
+.menu .cols{display:grid;grid-template-columns:1.5fr 1fr;gap:56px;align-content:center}
+.menu .main{list-style:none;margin:0;padding:0;display:grid;gap:14px}
+.menu .main a{display:grid;grid-template-columns:64px 1fr;align-items:center;gap:18px;text-decoration:none}
+.menu .main img{width:64px;height:auto}
+.menu .main span{font-family:var(--display);font-weight:500;font-size:clamp(2rem,5vw,3.4rem);line-height:1.05;transition:color .4s var(--ease)}
+.menu .main small{display:block;font-size:.92rem;color:var(--ink-soft);font-family:var(--body);font-weight:300}
+.menu .main a:hover span,.menu .main a[aria-current="page"] span{color:var(--gold-ink)}
+.menu .side{display:grid;gap:26px;align-content:start}
+.menu .side ul{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:6px}
+.menu .side a{text-decoration:none;font-size:1.05rem}
+.menu .foot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;font-size:.88rem;color:var(--ink-soft);border-top:1px solid var(--rule);padding-top:18px}
+.menu .foot a{text-decoration:none}
+@media (max-width:760px){.menu .cols{grid-template-columns:1fr;gap:32px;align-content:start}}
+
+/* ---------- page transitions ---------- */
+main{display:block;transition:opacity .45s var(--ease)}
+main.leaving{opacity:0}
+.view{display:grid;gap:clamp(96px,11vw,156px);padding-bottom:clamp(96px,11vw,150px)}
+.view:has(> .olive:last-child){padding-bottom:0}
+
+/* ---------- hero ---------- */
+.hero{display:grid;grid-template-columns:1.12fr .88fr;gap:clamp(30px,5vw,80px);align-items:center;padding-top:clamp(48px,7vw,96px)}
+.hero>*{min-width:0}
+.hero .txt{display:grid;gap:26px}
+.hero .motto{font-family:var(--display);font-weight:500;font-size:clamp(1.3rem,2vw,1.6rem);color:var(--ink)}
+.hero h1{max-width:11ch}
+.hero .row{display:flex;flex-wrap:wrap;align-items:center;gap:18px 30px}
+.vignette{position:relative;justify-self:center;width:100%;max-width:500px}
+.vignette img{width:100%}
+.motion .vignette img{animation:drift 14s ease-in-out infinite}
+@keyframes drift{0%,100%{transform:scale(1) rotate(0)}50%{transform:scale(1.025) rotate(-.6deg)}}
+.breath{display:flex;align-items:center;gap:16px;font-size:.88rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
+.breath i{display:block;height:1px;width:120px;background:var(--gold);transform-origin:left;transform:scaleX(.6)}
+.motion .breath i{animation:breathe 10s ease-in-out infinite}
+@keyframes breathe{0%,100%{transform:scaleX(.18)}50%{transform:scaleX(1)}}
+@media (max-width:860px){.hero{grid-template-columns:1fr}.vignette{max-width:360px;order:-1}}
+
+/* hold to pause */
+.hold{position:relative;display:inline-flex;text-align:left;align-items:center;gap:12px;background:none;border:0;color:var(--ink);font-family:var(--body);font-size:.95rem;letter-spacing:.06em;cursor:pointer;padding:4px 0;-webkit-user-select:none;user-select:none;touch-action:none}
+.hold svg{width:46px;height:46px;flex:none}
+.hold circle.track{stroke:var(--sage-2)}
+.hold circle.prog{stroke:var(--gold-ink);stroke-dasharray:126;stroke-dashoffset:126;transform:rotate(-90deg);transform-origin:center}
+.hold small{display:block;font-size:.78rem;color:var(--ink-soft);letter-spacing:.04em}
+.still{position:fixed;inset:0;z-index:90;background:rgba(251,249,244,.97);display:grid;place-items:center;text-align:center;padding:var(--gut);opacity:0;visibility:hidden;transition:opacity 1.2s var(--ease),visibility 0s linear 1.2s}
+.still.on{opacity:1;visibility:visible;transition:opacity 1.2s var(--ease)}
+.still .in{display:grid;gap:28px;justify-items:center;max-width:720px}
+.still img{width:min(300px,60vw)}
+.still p.q{font-family:var(--display);font-style:italic;font-size:clamp(2rem,5vw,3.2rem);line-height:1.2;color:var(--ink)}
+
+/* ---------- compass (her signature, made interactive) ---------- */
+.compass-sec{display:grid;gap:26px;justify-items:center;text-align:center}
+.compass-sec .head{display:grid;gap:14px;justify-items:center;max-width:700px}
+.rose{position:relative;display:grid;grid-template-columns:1fr auto 1fr;grid-template-rows:auto auto auto;gap:6px 18px;align-items:center;justify-items:center;width:100%;max-width:880px;margin-top:10px}
+.dir{display:grid;gap:10px;justify-items:center;text-decoration:none;color:var(--ink);background:none;border:0;padding:6px;cursor:pointer;font:inherit}
+.dir img{width:clamp(96px,12vw,150px);transition:transform .7s var(--ease)}
+.dir span{font-family:var(--display);font-weight:500;font-size:clamp(1rem,1.6vw,1.35rem);letter-spacing:.24em;text-transform:uppercase;line-height:1.25}
+.dir.n{grid-column:2;grid-row:1}
+.dir.w{grid-column:1;grid-row:2;grid-template-columns:auto auto;align-items:center;justify-self:end}
+.dir.e{grid-column:3;grid-row:2;grid-template-columns:auto auto;align-items:center;justify-self:start}
+.dir.w span{order:-1;text-align:right}
+.dir.s{grid-column:2;grid-row:3}
+.dir.s span{order:2}
+.dir.w,.dir.e{display:flex;gap:16px}
+.dir.w img,.dir.e img{flex:none}
+.dir:hover img,.dir[aria-pressed="true"] img{transform:scale(1.06)}
+.dir[aria-pressed="true"] span{color:var(--gold-ink)}
+.needle{grid-column:2;grid-row:2;width:clamp(120px,15vw,190px);transition:transform 1.4s cubic-bezier(.34,1.3,.5,1)}
+.needle img{width:100%}
+.reading{max-width:640px;min-height:150px;display:grid;gap:14px;justify-items:center;padding-top:22px;border-top:1px solid var(--rule)}
+.reading p.d{font-family:var(--display);font-size:clamp(1.35rem,2.2vw,1.7rem);line-height:1.35}
+@media (max-width:700px){
+  .rose{grid-template-columns:1fr 1fr;grid-template-rows:auto auto auto;gap:14px}
+  .needle{grid-column:1 / -1;grid-row:1}
+  .dir.n,.dir.w,.dir.e,.dir.s{grid-column:auto;grid-row:auto;grid-template-columns:1fr;justify-self:center}
+  .dir.w,.dir.e{display:grid}
+  .dir.w span{order:2;text-align:center}
+  .dir img{width:118px}
+  .dir span{font-size:.95rem;letter-spacing:.18em}
+}
+
+/* ---------- editorial blocks ---------- */
+.statement{display:grid;grid-template-columns:repeat(12,1fr);gap:24px}
+.statement .k{grid-column:1 / span 3}
+.statement .t{grid-column:4 / span 8;display:grid;gap:24px}
+.statement .t p.big{font-family:var(--display);font-size:clamp(1.8rem,3.4vw,2.8rem);line-height:1.25}
+@media (max-width:860px){.statement .k,.statement .t{grid-column:1 / -1}}
+.head{display:grid;gap:16px;max-width:760px}
+
+.index{list-style:none;margin:0;padding:0;border-top:1px solid var(--rule)}
+.index li{border-bottom:1px solid var(--rule)}
+.index a{display:grid;grid-template-columns:4.5rem 1.2fr 1.6fr auto;gap:24px;align-items:center;padding-block:24px;text-decoration:none;transition:background .5s var(--ease),padding .5s var(--ease)}
+.index a:hover{padding-inline:16px;background:var(--linen)}
+.index .n{font-family:var(--display);font-style:italic;font-size:1.15rem;color:var(--gold-ink)}
+.index .n img{width:64px}
+.index .h{font-family:var(--display);font-weight:500;font-size:clamp(1.7rem,3vw,2.4rem);line-height:1.08}
+.index .d{color:var(--ink-soft);font-size:1rem}
+.index .m{font-family:var(--display);font-size:.9rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-ink);white-space:nowrap}
+@media (max-width:860px){.index a{grid-template-columns:3.6rem 1fr;gap:4px 14px}.index .d,.index .m{grid-column:2}.index .n img{width:52px}}
+
+/* method as a day */
+.day{position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:28px;padding-top:86px}
+.day svg.arc{position:absolute;left:0;top:0;width:100%;height:80px;overflow:visible}
+.day svg.arc path{fill:none;stroke:var(--gold);stroke-width:1;stroke-dasharray:var(--len);stroke-dashoffset:0;transition:stroke-dashoffset 2.6s var(--ease)}
+.day svg.arc circle{fill:var(--linen);stroke:var(--gold);vector-effect:non-scaling-stroke}
+.day .st{display:grid;gap:10px;align-content:start;transition:opacity 1s var(--ease)}
+.day .st .time{font-family:var(--display);font-size:.9rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-ink)}
+.day .st h3{font-size:clamp(1.6rem,2.3vw,2rem)}
+.day .st p{color:var(--ink-soft);font-size:1rem}
+.motion .day:not(.seen) .st{opacity:.6}
+.motion .day:not(.seen) svg.arc path{stroke-dashoffset:var(--len)}
+@media (max-width:860px){.day{grid-template-columns:1fr 1fr;padding-top:0}.day svg.arc{display:none}.day .st{border-top:1px solid var(--rule);padding-top:16px}}
+@media (max-width:520px){.day{grid-template-columns:1fr}}
+.band{padding-block:clamp(80px,10vw,140px)}
+
+.split{display:grid;grid-template-columns:1fr 1fr;gap:clamp(36px,7vw,110px);align-items:center}
+.split>*{min-width:0}
+.split .txt{display:grid;gap:22px;align-content:center}
+.split.rev .fig{order:2}
+@media (max-width:860px){.split{grid-template-columns:1fr}.split.rev .fig{order:0}}
+.facts{display:flex;flex-wrap:wrap;gap:12px 40px;padding-block:16px;border-block:1px solid var(--rule)}
+.facts div{display:grid;gap:0}
+.facts b{font-family:var(--display);font-weight:500;font-size:2rem;line-height:1.1}
+.facts span{font-size:.8rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft)}
+
+/* book display: her covers on a sand table */
+.shelf{background:var(--sand);display:flex;flex-wrap:wrap;justify-content:center;align-items:flex-end;gap:clamp(18px,3vw,40px);padding:clamp(30px,5vw,60px) clamp(18px,4vw,56px)}
+.shelf figure{margin:0;display:grid;gap:12px;justify-items:center;text-align:center}
+.shelf img{width:clamp(130px,15vw,190px);box-shadow:0 18px 30px -18px rgba(40,36,24,.55);transition:transform .7s var(--ease)}
+.shelf figure:hover img{transform:translateY(-6px) rotate(-.6deg)}
+.shelf figcaption{font-size:.85rem;color:var(--ink-soft)}
+.shelf .free{font-family:var(--display);font-style:italic;color:var(--ink)}
+.book{width:100%;max-width:300px;box-shadow:0 26px 40px -24px rgba(40,36,24,.6)}
+
+.spread{display:grid;grid-template-columns:1fr 1px 1fr;gap:clamp(30px,5vw,72px)}
+.spread .sep{background:var(--rule)}
+.spread>div{display:grid;gap:16px;align-content:start;min-width:0}
+.spread q{quotes:none;font-family:var(--display);font-size:clamp(1.6rem,2.6vw,2.1rem);line-height:1.32}
+.spread .src{font-size:.85rem;color:var(--ink-soft)}
+@media (max-width:860px){.spread{grid-template-columns:1fr}.spread .sep{height:1px}}
+
+.carte{list-style:none;margin:0;padding:0;border-top:1px solid var(--rule)}
+.carte li{display:grid;grid-template-columns:1fr auto;gap:8px 30px;padding-block:26px;border-bottom:1px solid var(--rule)}
+.carte h3{font-size:clamp(1.6rem,2.4vw,2.1rem)}
+.carte .price{font-family:var(--display);font-size:1.7rem;white-space:nowrap;align-self:baseline}
+.carte .price small{font-family:var(--body);font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin-right:6px}
+.carte p{grid-column:1;color:var(--ink-soft);max-width:58ch}
+.carte .meta{grid-column:1 / -1;display:flex;flex-wrap:wrap;gap:10px 28px;align-items:center}
+.carte .meta span{font-size:.82rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold-ink)}
+.olive .carte,.olive .carte li{border-color:var(--rule-olive)}
+.olive .carte p,.olive .carte .price small{color:var(--on-olive-soft)}
+.olive .carte .meta span{color:var(--gold-on-olive)}
+@media (max-width:600px){.carte li{grid-template-columns:1fr}}
+
+.author{display:grid;grid-template-columns:minmax(160px,300px) 1fr;gap:clamp(30px,6vw,90px);align-items:center}
+.portrait{aspect-ratio:1;max-width:100%;border-radius:50%;background:var(--linen);border:1px solid var(--gold);box-shadow:0 0 0 10px var(--ivory),0 0 0 11px var(--rule);display:grid;place-items:center;text-align:center;font-size:.8rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);padding:20px}
+.author blockquote{margin:0;font-family:var(--display);font-style:italic;font-size:clamp(1.8rem,3vw,2.6rem);line-height:1.25}
+@media (max-width:700px){.author{grid-template-columns:1fr}.portrait{max-width:220px}}
+
+.signup{display:grid;grid-template-columns:auto 1.1fr 1fr;gap:clamp(30px,5vw,70px);align-items:center}
+.signup img{width:clamp(130px,14vw,180px);box-shadow:0 22px 40px -20px rgba(0,0,0,.6)}
+@media (max-width:960px){.signup{grid-template-columns:1fr}.signup img{justify-self:start}}
+form.line{display:grid;grid-template-columns:1fr auto;gap:0;border-bottom:1px solid var(--on-olive-soft)}
+form.line input{font:inherit;font-size:1.1rem;background:transparent;border:0;color:var(--on-olive);padding:16px 2px;min-width:0}
+form.line input::placeholder{color:var(--on-olive-soft)}
+form.line button{background:none;border:0;color:var(--gold-on-olive);font-family:var(--display);font-size:.95rem;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;padding:0 4px 0 18px}
+.fine{font-size:.88rem;color:var(--on-olive-soft);margin-top:14px}
+.thanks{font-family:var(--display);font-style:italic;font-size:1.6rem;color:var(--gold-on-olive)}
+
+.form{display:grid;gap:28px;max-width:720px}
+.form .two{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+@media (max-width:640px){.form .two{grid-template-columns:1fr}}
+.field{display:grid;gap:6px}
+.field label{font-size:.82rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
+.field input,.field select,.field textarea{font:inherit;font-size:1.08rem;color:var(--ink);background:transparent;border:0;border-bottom:1px solid var(--ink-soft);border-radius:0;padding:10px 2px;min-width:0;width:100%}
+.field textarea{resize:vertical;min-height:120px}
+.field select{appearance:none;-webkit-appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--ink) 50%),linear-gradient(135deg,var(--ink) 50%,transparent 50%);background-position:calc(100% - 14px) 55%,calc(100% - 9px) 55%;background-size:5px 5px;background-repeat:no-repeat}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-bottom-color:var(--gold-ink);box-shadow:0 1px 0 var(--gold-ink)}
+
+.filters{display:flex;flex-wrap:wrap;gap:6px 28px;border-bottom:1px solid var(--rule)}
+.filters button{background:none;border:0;border-bottom:1px solid transparent;margin-bottom:-1px;padding:14px 0;font-family:var(--display);font-size:.95rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft);cursor:pointer}
+.filters button[aria-pressed="true"]{color:var(--ink);border-bottom-color:var(--gold)}
+.rows{list-style:none;margin:0;padding:0}
+.rows li{border-bottom:1px solid var(--rule)}
+.rows a{display:grid;grid-template-columns:9rem 1fr auto;gap:20px;align-items:baseline;padding-block:20px;text-decoration:none}
+.rows .c{font-family:var(--display);font-size:.85rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold-ink)}
+.rows .t{font-family:var(--display);font-size:clamp(1.3rem,2vw,1.55rem);line-height:1.25}
+.rows .x{font-size:.82rem;color:var(--ink-soft);white-space:nowrap}
+.rows a:hover .t{text-decoration:underline;text-decoration-color:var(--gold);text-decoration-thickness:1px;text-underline-offset:6px}
+@media (max-width:700px){.rows a{grid-template-columns:1fr;gap:2px}.rows .x{display:none}}
+.olive .rows li{border-color:var(--rule-olive)}
+.olive .rows .c{color:var(--gold-on-olive)}
+
+.found{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,330px),1fr));gap:0;border-top:1px solid var(--rule)}
+.found section{padding:32px 32px 32px 0;border-bottom:1px solid var(--rule);display:grid;gap:12px;align-content:start}
+.found h3 em{font-size:.6em;display:block;margin-bottom:4px}
+.found .note{font-family:var(--display);font-size:1.3rem;line-height:1.38}
+.found ul{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+
+.quiz{display:grid;gap:36px;max-width:900px}
+.qbar{height:1px;background:var(--rule);position:relative}
+.qbar span{position:absolute;left:0;top:0;bottom:0;background:var(--gold);transition:width .8s var(--ease)}
+.opts{list-style:none;margin:0;padding:0;border-top:1px solid var(--rule)}
+.opts button{width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--rule);color:var(--ink);font-family:var(--display);font-size:clamp(1.4rem,2.4vw,1.9rem);line-height:1.25;padding:20px 4px;cursor:pointer;display:grid;grid-template-columns:2.4rem 1fr;gap:12px;transition:color .4s var(--ease),padding .5s var(--ease)}
+.opts button b{font-style:italic;font-weight:400;font-size:1.05rem;color:var(--gold-ink);padding-top:.45em}
+.opts button:hover{color:var(--gold-ink);padding-left:16px}
+.result{display:grid;gap:24px}
+
+.subhero{display:grid;grid-template-columns:1.2fr .8fr;gap:clamp(30px,5vw,80px);align-items:center;padding-top:clamp(48px,7vw,96px)}
+.subhero>*{min-width:0}
+.subhero .txt{display:grid;gap:22px}
+.subhero img.v{width:clamp(200px,24vw,300px);justify-self:center}
+@media (max-width:860px){.subhero{grid-template-columns:1fr}.subhero img.v{order:-1;width:200px}}
+
+details{border-bottom:1px solid var(--rule)}
+summary{cursor:pointer;list-style:none;display:grid;grid-template-columns:1fr auto;gap:20px;padding-block:22px;font-family:var(--display);font-weight:500;font-size:clamp(1.3rem,2.2vw,1.6rem);line-height:1.25}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-family:var(--body);font-weight:300;font-size:1.4rem;color:var(--gold-ink);transition:transform .4s var(--ease)}
+details[open] summary::after{transform:rotate(45deg)}
+details p{padding-bottom:22px;color:var(--ink-soft);max-width:64ch}
+
+.foot{background:var(--linen);border-top:1px solid var(--rule)}
+.foot .wrap{padding-block:clamp(60px,8vw,100px) 36px;display:grid;gap:50px}
+.foot .grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:40px}
+.foot h2{font-size:clamp(2rem,3.6vw,2.8rem)}
+.foot ul{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:6px}
+.foot a{text-decoration:none}
+.foot a:hover{color:var(--gold-ink)}
+.foot .base{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;padding-top:22px;border-top:1px solid var(--rule);font-size:.85rem;color:var(--ink-soft)}
+@media (max-width:860px){.foot .grid{grid-template-columns:1fr 1fr}.foot .grid>div:first-child{grid-column:1 / -1}}
+
+
+/* ---------- the day (home is one slow day, dawn to night) ---------- */
+.hour{display:flex;align-items:baseline;gap:14px;margin:0;font-family:var(--display);color:var(--gold-ink)}
+.hour b{font-weight:400;font-style:italic;font-size:1.5rem;letter-spacing:.02em}
+.hour span{font-weight:500;font-size:.86rem;letter-spacing:.28em;text-transform:uppercase}
+.hour::after{content:"";flex:0 0 40px;height:1px;background:currentColor;opacity:.5;align-self:center}
+.compass-sec .hour{justify-content:center}
+.olive .hour{color:var(--gold-on-olive)}
+.dawn{display:grid;grid-template-columns:1fr 1fr;gap:clamp(30px,5vw,80px);align-items:center;padding-top:clamp(40px,6vw,80px);min-height:min(88vh,900px)}
+.dawn>*{min-width:0}
+.dawn .txt{display:grid;gap:26px}
+.dawn .motto{font-family:var(--display);font-weight:500;font-size:clamp(1.3rem,2vw,1.6rem)}
+.dawn h1{font-size:clamp(3.2rem,7.4vw,6.6rem);line-height:.98;max-width:9ch}
+.dawn .row{display:flex;flex-wrap:wrap;align-items:center;gap:18px 30px}
+.dial{position:relative;width:100%;max-width:600px;aspect-ratio:1;justify-self:center;display:grid;place-items:center}
+.dial .ring{position:absolute;inset:0;width:100%;height:100%;color:var(--gold);transform:rotate(var(--rot,0deg));transition:transform .2s linear}
+.dial img{width:76%;position:relative}
+.motion .dial img{animation:drift 14s ease-in-out infinite}
+.scrollcue{display:flex;align-items:center;gap:16px;font-family:var(--display);font-size:.9rem;letter-spacing:.24em;text-transform:uppercase;color:var(--ink-soft);margin-top:calc(-1 * clamp(60px,8vw,110px))}
+.scrollcue i{display:block;width:1px;height:46px;background:linear-gradient(var(--gold),transparent)}
+.motion .scrollcue i{animation:cue 2.8s var(--ease) infinite;transform-origin:top}
+@keyframes cue{0%{transform:scaleY(0)}60%{transform:scaleY(1)}100%{transform:scaleY(1);opacity:0}}
+@media (max-width:860px){.dawn{grid-template-columns:1fr;min-height:0}.dial{max-width:380px;order:-1}.scrollcue{display:none}}
+.plinth{position:relative;padding:48px 64px;background:radial-gradient(closest-side,var(--linen),transparent)}
+.golden{background:linear-gradient(180deg,var(--ivory),#F1E7D3 30%,#EEDFC4)}
+.golden .shelf{background:rgba(255,255,255,.35);border:1px solid rgba(184,150,79,.35)}
+.golden .shelf figcaption{color:var(--ink)}
+.dusk{height:clamp(160px,18vw,260px);margin-bottom:calc(-1 * clamp(96px,11vw,156px));background:linear-gradient(180deg,var(--ivory),#D9C6A3 35%,#7B6E55 70%,var(--olive))}
+.view>.dusk+.olive{margin-top:0}
+.evening{padding-top:clamp(40px,5vw,70px)}
+.night-end{background:#2A2C22;margin-top:calc(-1 * clamp(96px,11vw,156px))}
+.night{list-style:none;margin:0;padding:0;border-top:1px solid var(--rule-olive)}
+.night li{border-bottom:1px solid var(--rule-olive)}
+.night a{display:grid;grid-template-columns:3.5rem 1fr auto;gap:20px;align-items:baseline;padding-block:22px;text-decoration:none;transition:padding .5s var(--ease)}
+.night .n{font-family:var(--display);font-style:italic;color:var(--gold-on-olive)}
+.night .t{font-family:var(--display);font-size:clamp(1.5rem,3vw,2.5rem);line-height:1.12;transition:color .4s var(--ease)}
+.night .c{font-size:.8rem;letter-spacing:.16em;text-transform:uppercase;color:var(--on-olive-soft);white-space:nowrap}
+.night a:hover{padding-left:18px}
+.night a:hover .t{color:var(--gold-on-olive)}
+@media (max-width:700px){.night a{grid-template-columns:2.4rem 1fr}.night .c{grid-column:2}}
+.peek{position:fixed;left:0;top:0;width:230px;z-index:45;pointer-events:none;opacity:0;transform:translate(-50%,-50%) scale(.85);transition:opacity .45s var(--ease),transform .6s var(--ease)}
+.peek.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
+@media (hover:none){.peek{display:none}}
+.sunclock{position:fixed;left:max(22px,env(safe-area-inset-left));top:50%;transform:translateY(-50%);z-index:40;display:none;gap:14px;justify-items:center;pointer-events:none;color:var(--gold)}
+body.home-on .sunclock{display:grid}
+.sunclock .rail{position:relative;width:1px;height:200px;background:currentColor;opacity:.45}
+.sunclock .sun{position:absolute;left:50%;top:calc(var(--day,0) * 100%);width:11px;height:11px;margin:-5.5px 0 0 -5.5px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 5px rgba(184,150,79,.2);transition:top .3s linear}
+.sunclock .tm{font-family:var(--display);font-style:italic;font-size:1.05rem}
+@media (max-width:1360px){body.home-on .sunclock{display:none}}
+
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{transition-duration:.01ms!important;animation:none!important}
+}
+
+/* ================= The Daily Pause: one simple thing a day ================= */
+.today{display:grid;grid-template-columns:.95fr 1.05fr;gap:clamp(30px,6vw,96px);align-items:center;padding-top:clamp(36px,5vw,72px)}
+.today>*{min-width:0}
+.today .dial{max-width:560px}
+.today .txt{display:grid;gap:24px}
+.almanac{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 18px;font-family:var(--display);color:var(--gold-ink)}
+.almanac .no{font-style:italic;font-size:clamp(2.6rem,4.6vw,3.8rem);line-height:1;color:var(--ink)}
+.almanac .no small{font-size:.42em;font-style:normal;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-ink);margin-right:8px;vertical-align:.5em}
+.almanac .meta{font-weight:500;font-size:.88rem;letter-spacing:.24em;text-transform:uppercase}
+.today h1{font-size:clamp(2.6rem,5.4vw,4.6rem);line-height:1.02;max-width:14ch}
+.today .why{font-size:clamp(1.08rem,1.4vw,1.2rem);color:var(--ink-soft);max-width:52ch}
+.today .src{font-size:.86rem;color:var(--ink-soft)}
+.today .src b{font-weight:500;color:var(--ink)}
+.today .row{display:flex;flex-wrap:wrap;gap:14px 26px;align-items:center}
+.ghost{background:none;border:0;padding:0;cursor:pointer;font-family:var(--display);font-weight:500;font-size:.92rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-ink);display:inline-flex;gap:12px;align-items:center}
+.ghost::after{content:"";width:28px;height:1px;background:currentColor;transition:width .5s var(--ease)}
+.ghost:hover::after{width:52px}
+.olive .ghost{color:var(--gold-on-olive)}
+.streak{font-size:.88rem;color:var(--ink-soft)}
+.streak b{font-family:var(--display);font-style:italic;font-weight:400;font-size:1.2rem;color:var(--gold-ink)}
+@media (max-width:900px){.today{grid-template-columns:1fr}.today .dial{max-width:340px;order:-1}}
+
+/* tomorrow line under hero */
+.tomorrow{display:grid;grid-template-columns:auto 1fr auto;gap:24px;align-items:center;padding:24px 0;border-block:1px solid var(--rule)}
+.tomorrow p{font-family:var(--display);font-size:clamp(1.2rem,2vw,1.5rem);line-height:1.3}
+.tomorrow .when{font-family:var(--display);font-style:italic;font-size:2rem;color:var(--gold-ink);line-height:1}
+.tomorrow form.line{border-bottom-color:var(--ink-soft);min-width:min(420px,100%)}
+.tomorrow form.line input{color:var(--ink)}
+.tomorrow form.line input::placeholder{color:var(--ink-soft)}
+.tomorrow form.line button{color:var(--gold-ink)}
+.tomorrow .thanks{color:var(--gold-ink);font-size:1.3rem}
+@media (max-width:900px){.tomorrow{grid-template-columns:1fr}}
+
+/* the week as almanac pages */
+.week{display:grid;grid-template-columns:repeat(7,1fr);gap:0;border-top:1px solid var(--rule);border-left:1px solid var(--rule)}
+.week>*{border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:18px 16px 22px;display:grid;gap:10px;align-content:start;text-decoration:none;min-height:230px;min-width:0;transition:background .5s var(--ease)}
+.week a:hover{background:var(--linen)}
+.week .d{font-family:var(--display);font-size:.82rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-soft)}
+.week .n{font-family:var(--display);font-style:italic;font-size:1.7rem;line-height:1;color:var(--gold-ink)}
+.week .t{font-family:var(--display);font-size:1.15rem;line-height:1.25;overflow-wrap:break-word}
+.week .f{font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin-top:auto}
+.week .is-today{background:var(--olive);color:var(--on-olive)}
+.week .is-today:hover{background:var(--olive)}
+.week .is-today .n{color:var(--gold-on-olive)}
+.week .is-today .d,.week .is-today .f{color:var(--on-olive-soft)}
+.week .locked{color:var(--ink-soft);background:repeating-linear-gradient(135deg,transparent 0 9px,rgba(184,150,79,.08) 9px 10px)}
+.week .locked .t{font-style:italic;color:var(--ink-soft)}
+@media (max-width:1000px){.week{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:minmax(150px,1fr);overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}.week>*{scroll-snap-align:start;min-height:210px}}
+
+/* how it works */
+.how{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(24px,4vw,56px)}
+.how div{display:grid;gap:10px;align-content:start;padding-top:18px;border-top:1px solid var(--gold)}
+.how b{font-family:var(--display);font-style:italic;font-weight:400;font-size:2.4rem;line-height:1;color:var(--gold-ink)}
+.how h3{font-size:clamp(1.5rem,2.2vw,1.9rem)}
+.how p{color:var(--ink-soft);font-size:1rem}
+@media (max-width:800px){.how{grid-template-columns:1fr}}
+
+/* foundations wheel as index */
+.fgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));column-gap:56px;border-top:1px solid var(--rule)}
+.fgrid a{display:grid;grid-template-columns:3rem 1fr auto;gap:14px;align-items:baseline;padding:22px 18px 22px 0;border-bottom:1px solid var(--rule);text-decoration:none;transition:padding .5s var(--ease),background .5s var(--ease)}
+.fgrid a:hover{padding-left:14px;background:var(--linen)}
+.fgrid .r{font-family:var(--display);font-style:italic;color:var(--gold-ink)}
+.fgrid .h{font-family:var(--display);font-size:1.7rem;line-height:1.1}
+.fgrid .c{font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
+
+/* membership */
+.tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid var(--rule)}
+.tier{display:grid;gap:18px;align-content:start;padding:clamp(26px,3vw,40px);border-right:1px solid var(--rule);min-width:0}
+.tier:last-child{border-right:0}
+.tier .price{font-family:var(--display);font-size:clamp(2.4rem,4vw,3.2rem);line-height:1}
+.tier .price small{font-family:var(--body);font-size:.85rem;color:var(--ink-soft);letter-spacing:.04em;margin-left:6px}
+.tier ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.tier li{padding-left:22px;position:relative;font-size:1rem}
+.tier li::before{content:"";position:absolute;left:0;top:.75em;width:10px;height:1px;background:var(--gold)}
+.tier .alt{font-size:.88rem;color:var(--ink-soft)}
+.tier.star{background:var(--olive);color:var(--on-olive);border-color:var(--olive)}
+.tier.star h3{color:var(--on-olive)}
+.tier.star .caps{color:var(--gold-on-olive)}
+.tier.star .price small,.tier.star .alt{color:var(--on-olive-soft)}
+.tier.star .btn{background:var(--gold-on-olive);border-color:var(--gold-on-olive);color:var(--olive)}
+.tier.star .btn:hover{background:transparent;color:var(--gold-on-olive)}
+@media (max-width:900px){.tiers{grid-template-columns:1fr}.tier{border-right:0;border-bottom:1px solid var(--rule)}.tier:last-child{border-bottom:0}}
+
+/* Slack mock for teams */
+.slack{background:#FFFFFF;color:#1D1C1D;border-radius:10px;box-shadow:0 30px 60px -30px rgba(0,0,0,.6);padding:18px 20px;font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:15px;line-height:1.45;max-width:520px;width:100%}
+.slack .who{display:flex;gap:10px;align-items:center}
+.slack .who img{width:36px;height:36px;border-radius:6px;background:var(--linen);padding:3px}
+.slack .who b{font-weight:700}
+.slack .who span{font-size:12px;color:#616061}
+.slack .who i{font-style:normal;font-size:10px;font-weight:700;background:#E8E8E8;color:#454245;border-radius:3px;padding:1px 4px}
+.slack .body{margin:8px 0 0 46px;display:grid;gap:8px}
+.slack .body .tt{font-weight:700}
+.slack .acts{display:flex;flex-wrap:wrap;gap:8px}
+.slack .acts span{border:1px solid #BBBABB;border-radius:4px;padding:4px 12px;font-size:14px;font-weight:700}
+.slack .acts span.pri{background:#4A5A35;border-color:#4A5A35;color:#fff}
+.slack .react{font-size:12px;color:#616061}
+
+/* pause pages */
+.pp{display:grid;grid-template-columns:1fr 1fr;gap:clamp(30px,6vw,90px);align-items:start;padding-top:clamp(36px,5vw,72px)}
+.pp>*{min-width:0}
+.pp .txt{display:grid;gap:22px}
+.pp h2{font-size:clamp(1.5rem,2.4vw,2rem)}
+@media (max-width:900px){.pp{grid-template-columns:1fr}}
+.steps{margin:0;padding-left:1.4em;display:grid;gap:8px;color:var(--ink-soft)}
+.steps::marker{color:var(--gold-ink)}
+
+/* full-screen guided pause */
+.timer{position:relative;width:min(300px,62vw);aspect-ratio:1;display:grid;place-items:center}
+.timer svg{position:absolute;inset:0;width:100%;height:100%;transform:rotate(-90deg)}
+.timer .tr{stroke:var(--rule)}
+.timer .pg{stroke:var(--gold-ink);stroke-dasharray:942.5;stroke-dashoffset:942.5;transition:stroke-dashoffset 1s linear}
+.timer img{width:72%;border-radius:50%}
+.timer .sec{position:absolute;bottom:-46px;left:0;right:0;font-family:var(--display);font-style:italic;font-size:1.6rem;color:var(--gold-ink)}
+.still .in{gap:22px}
+.still .inst{font-family:var(--display);font-size:clamp(1.5rem,3.6vw,2.4rem);line-height:1.25;color:var(--ink);max-width:24ch;margin-top:40px}
+.still .done-row{display:flex;flex-wrap:wrap;justify-content:center;gap:14px 26px;align-items:center}
+.still .eyebrow{font-family:var(--display);font-weight:500;font-size:.9rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gold-ink)}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);background:var(--ink);color:var(--ivory);padding:12px 22px;border-radius:999px;font-size:.92rem;opacity:0;transition:opacity .4s var(--ease),transform .4s var(--ease);z-index:95;pointer-events:none}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+
+.still{background:var(--ivory)}
+
+/* B (2026-10-26): no compass, the watercolour alone and larger */
+.dial img{width:100%;filter:drop-shadow(0 26px 30px rgba(80,70,40,.12))}
+.view{grid-template-columns:minmax(0,1fr)}
+
+/* actions under a pause (2026-10-27): two equal buttons, then one quiet line */
+.acts{display:flex;flex-wrap:wrap;gap:12px}
+.acts .btn{min-width:0}
+.btn.line{background:transparent;border-color:var(--ink);color:var(--ink)}
+.btn.line:hover{background:var(--ink);color:var(--ivory)}
+.more{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px 24px;padding-top:16px;border-top:1px solid var(--rule);font-size:.95rem}
+.more a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--gold);text-underline-offset:5px}
+.more a:hover{color:var(--gold-ink)}
+.more .streak{margin:0}
+.btn.line::after{content:none}
+/* Begin is the one thing to do: solid olive, larger (2026-10-27) */
+.txt>.acts .js-begin{background:var(--olive);border-color:var(--olive);color:var(--on-olive);font-weight:400;font-size:1.05rem;padding:18px 40px;box-shadow:0 14px 26px -16px rgba(52,54,42,.7)}
+.txt>.acts .js-begin:hover{background:#23251B;border-color:#23251B;color:var(--on-olive)}
+.txt>.acts .js-card{padding:18px 32px;font-size:1.05rem}
+.more a{font-weight:400;color:var(--gold-ink)}
+@media (max-width:480px){.txt>.acts .btn{flex:1 1 100%}}
+
+/* Why it works: the fact under each pause (Viola 2026-10-27) */
+.wiw{display:grid;gap:8px}
+.why-l{font-family:var(--display);font-weight:500;font-size:.8rem;letter-spacing:.26em;text-transform:uppercase;color:var(--gold-ink)}
+
+/* Seven foundations as a row of watercolours (Viola 2026-10-27: no numerals, more luxurious) */
+.fgrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:clamp(18px,2.4vw,36px);border-top:0}
+.fgrid a{display:grid;grid-template-columns:none;justify-items:center;align-content:start;text-align:center;gap:8px;padding:0;border:0;background:none;text-decoration:none}
+.fgrid a:hover{padding-left:0;background:none}
+.fgrid img{width:100%;max-width:200px;height:auto;margin-bottom:10px;filter:drop-shadow(0 18px 22px rgba(52,54,42,.16));transition:transform .8s var(--ease)}
+.fgrid a:hover img{transform:translateY(-6px) scale(1.02)}
+.fgrid .h{font-family:var(--display);font-size:clamp(1.35rem,1.7vw,1.6rem);line-height:1.1;color:var(--ink)}
+.fgrid .sub{font-family:var(--display);font-style:italic;font-size:1rem;line-height:1.35;color:var(--ink-soft);max-width:18ch}
+.fgrid .c{margin-top:6px;font-size:.72rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold-ink)}
+@media (max-width:1100px){.fgrid{grid-template-columns:repeat(4,minmax(0,1fr));row-gap:44px}}
+@media (max-width:700px){.fgrid{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:40px}.fgrid a:last-child{grid-column:1/-1;max-width:50%;justify-self:center}}
+
+/* Seven foundations D+ (replaces the watercolour row) */
+/* D+ */
+.fd2{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);gap:clamp(32px,6vw,96px);align-items:center}
+.fd2 .stage{position:relative;aspect-ratio:1;width:min(100%,520px);justify-self:center}
+.fd2 .stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:0;transform:scale(.985);transition:opacity .9s var(--ease),transform 1.4s var(--ease);filter:drop-shadow(0 26px 34px rgba(52,54,42,.18))}
+.fd2 .stage img.on{opacity:1;transform:none}
+.fd2 .acc{list-style:none;margin:0;padding:0;border-top:1px solid var(--rule)}
+.fd2 li{border-bottom:1px solid var(--rule)}
+.fd2 button{all:unset;box-sizing:border-box;cursor:pointer;width:100%;display:flex;justify-content:space-between;align-items:center;padding:18px 0}
+.fd2 button:focus-visible{outline:1px solid var(--gold);outline-offset:4px}
+.fd2 .h{transition:color .6s var(--ease),letter-spacing .6s var(--ease)}
+.fd2 li.on .h{color:var(--gold-ink);font-style:italic}
+.fd2 .plus{width:12px;height:12px;position:relative;opacity:.6}
+.fd2 .plus:before,.fd2 .plus:after{content:"";position:absolute;left:0;top:50%;width:12px;border-top:1px solid var(--gold-ink);transition:transform .6s var(--ease)}
+.fd2 .plus:after{transform:rotate(90deg)}.fd2 li.on .plus:after{transform:rotate(0)}
+.fd2 .fx{display:grid;grid-template-rows:0fr;transition:grid-template-rows .7s var(--ease)}
+.fd2 .fx>div{overflow:hidden;display:grid;gap:12px;justify-items:start}
+.fd2 li.on .fx{grid-template-rows:1fr}
+.fd2 li.on .fx>div{padding-bottom:22px}
+.fd2 .go{font-size:.78rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-ink);border-bottom:1px solid var(--gold);padding-bottom:2px}
+@media (max-width:760px){.fd2{grid-template-columns:1fr}.fd2 .stage{width:min(82%,340px)}}
+@media (prefers-reduced-motion:reduce){.fd2 *{transition:none!important}}
+
+.fd2 .h{font-family:var(--display);font-size:clamp(1.5rem,2vw,1.8rem);line-height:1.1;color:var(--ink)}
+.fd2 .s{font-family:var(--display);font-style:italic;color:var(--ink-soft);font-size:1.1rem;line-height:1.4;margin:0}
+.fd2 .go{text-decoration:none}
+
+/* How it works markers: small gold line drawings (Viola chose option 3, 2026-10-27) */
+.how .mk{display:block;width:44px;height:44px;margin-bottom:4px}
+
+/* Wix: signup is a button to the real subscribe page */
+.sub-go{display:grid;gap:10px;justify-items:start}.sub-go .soft{font-size:.85rem;margin:0}
+.sub-go .btn::after{content:none}
+.how-mk>div{border-top:0;padding-top:0}
+.how-mk .mkw{display:flex;align-items:center;gap:16px;margin-bottom:6px}
+.how-mk .mkw::after{content:"";flex:1;border-top:1px solid var(--gold)}
+.how-mk .mk{margin-bottom:0}
+.today{align-items:start}.today .dial{align-self:start}
+/* This week on phones: almanac strip + one card (variant E) */
+.alm2{display:none}
+@media (max-width:760px){.week{display:none}.alm2{display:grid;gap:18px}
+.alm2 .days{display:grid;grid-template-columns:repeat(7,1fr);text-align:center;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.alm2 button{display:grid;padding:10px 0 0;background:none;border:0;font:inherit;color:var(--ink);cursor:pointer}
+.alm2 button span{font-size:.62rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft)}
+.alm2 button b{font-family:var(--display);font-weight:500;font-size:1.4rem;line-height:1.3}
+.alm2 button i{height:2px;margin:8px 10px 0}
+.alm2 button.on b{color:var(--gold-ink);font-style:italic}.alm2 button.on i{background:var(--gold)}.alm2 button.fut{opacity:.45}.alm2 button.fut.on{opacity:1}
+.ac2{display:grid;gap:10px}.ac2[hidden]{display:none}
+.ac2 .d{font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-soft)}
+.ac2 .t{font-family:var(--display);font-size:1.45rem;line-height:1.25}.ac2 .lk{font-style:italic;color:var(--ink-soft)}
+.ac2 .nx{font-family:var(--display);font-style:italic;color:var(--gold-ink);text-decoration:none}}
+
+html,body{background:var(--ivory)}body{overflow-x:hidden}html{scrollbar-width:none}html::-webkit-scrollbar,body::-webkit-scrollbar{display:none;width:0}
+/* inside a tall Wix frame the guided pause opens where the reader is, not in the middle of the frame */
+.still{position:absolute;inset:auto 0 auto 0;height:min(860px,100%)}.still[hidden]{display:none}
+.cardbox{position:absolute;left:0;right:0;z-index:95;display:grid;justify-items:center;gap:14px;padding:28px 18px 34px;background:var(--ivory);text-align:center}
+.cardbox[hidden]{display:none}
+.cardbox img{width:min(420px,88%);height:auto;box-shadow:0 24px 40px -26px rgba(60,50,30,.6)}
+.cardbox p{margin:0;max-width:34ch;color:var(--ink-soft)}
+.cardbox .row{display:flex;flex-direction:column;align-items:center;gap:22px;margin-top:6px}.cardbox p{font-family:var(--display);font-style:italic;font-size:1.15rem}.cardbox p.caps{font-style:normal;font-size:.8rem}
+.toast{position:absolute;bottom:auto}
+
+@media (min-width:900px){.week{grid-template-columns:repeat(7,minmax(0,1fr));grid-auto-flow:row;overflow:visible}.week>*{padding:16px 12px 18px}}
+.view>:not(:nth-child(5)){display:none!important}.still{position:absolute!important;left:0!important;right:0!important;bottom:auto!important;overflow:hidden;align-items:start!important;place-items:start center!important}.cardbox{position:absolute!important;left:0!important;right:0!important;bottom:auto!important;overflow:hidden;align-content:start!important}.toast{position:fixed!important;top:auto!important;bottom:16px!important}.view>*{margin-top:0!important}.view{padding:0!important}</style></head><body>
+<main id="main"></main>
+<div class="still" id="still" role="dialog" aria-modal="true" aria-label="Guided pause" hidden><div class="in" id="stillIn"></div></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div class="cardbox" id="cardbox" role="dialog" aria-modal="true" aria-label="Your Daily Pause card" hidden></div>
+<script>
+(function(){
+"use strict";
+/* ===== Where the buttons lead on your Wix site. Change the addresses here if your pages are named differently. ===== */
+var LINKS={
+  archive:'https://www.pause-to-play.com/archive',
+  club:'https://www.pause-to-play.com/subscribe',
+  subscribe:'https://www.pause-to-play.com/subscribe',
+  teams:'https://www.pause-to-play.com/plan-your-pause',
+  about:'https://www.pause-to-play.com/about-me',
+  deeper:'https://www.pause-to-play.com/category/all-products',
+  journal:'https://www.pause-to-play.com/blog'
+};
+var IMG={hero:'',sleep:'https://cdn.jsdelivr.net/gh/pausetoplaycontact-source/pause-to-play-media@d57fe09d3e2200497ca4950b872966c4e1e873ba/wix-embeds/img/sleep.webp',connection:'https://cdn.jsdelivr.net/gh/pausetoplaycontact-source/pause-to-play-media@d57fe09d3e2200497ca4950b872966c4e1e873ba/wix-embeds/img/connection.webp',joy:'https://cdn.jsdelivr.net/gh/pausetoplaycontact-source/pause-to-play-media@d57fe09d3e2200497ca4950b872966c4e1e873ba/wix-embeds/img/play.webp',stillness:'https://cdn.jsdelivr.net/gh/pausetoplaycontact-source/pause-to-play-media@d57fe09d3e2200497ca4950b872966c4e1e873ba/wix-embeds/img/stillness.webp',nature:'https://cdn.jsdelivr.net/gh/pausetoplaycontact-source/pause-to-play-media@d57fe09d3e2200497ca4950b872966c4e1e873ba/wix-embeds/img/nature.webp',nourishment:'https://cdn.jsdelivr.net/gh/pausetoplaycontact-source/pause-to-play-media@d57fe09d3e2200497ca4950b872966c4e1e873ba/wix-embeds/img/nourishment.webp',movement:'https://cdn.jsdelivr.net/gh/pausetoplaycontact-source/pause-to-play-media@d57fe09d3e2200497ca4950b872966c4e1e873ba/wix-embeds/img/movement.webp',logo:'data:image/webp;base64,UklGRmADAABXRUJQVlA4WAoAAAAQAAAANQAANQAAQUxQSLsAAAABgNtIkiOp/DfwPHgqnx5Pent65qkYEROQ/2v4Kr6Kr+IkOo7hk9OQtJzBPUksqDeQcsE2MtDMONlmUyZSGCCXNweRS6OpmTOaDbfKZLoskLH0z8jgV8lSJnJSUrySGmfUV76E8jjHoHOvsuOhwZUDVPlEoc4RKXTSN5cCtxPCWp2V17ncW1kky1wljZyVVFklg7QSZJWM0suaOb3QQ4axARlHKzSQnRi5IXthDdnvc8fnHGk1Bz9c5X8UAFZQOCB+AgAAcAwAnQEqNgA2AD5tMpRIJCKiISYaqnCADYlpABOXvxVlDqwIMCVBDpH814svoT2AP1j6y/oNfrkrr+BREcE1cq6WWS3/IVspNYeR9tA6LBpYkqOWz/7ZNqBZi18ZOF+1+5jTJZcgmVD0bu6gAP7+11Lf5NngKTcoLYLIdR29WhtcSPJ3pvJNe9sqqnXtcS60w4h2ATotqafO8f2/HJCMm14KS/fz69V4Ob6kbocW+1GjQXMr4nl5qybiDKPVh5bK8t6Qp1Sqx1dD18eSYYfzId9ZJ3nUSSdDzB5Phv4kf+LkSrVxgvFK+YYd7bSPPQf2fuN9uaj1PHTg3jnoxplSQ614vTPTx8LZGBMa+6ve5/sglWdNxtmky2inrSj5fwGH2V47E9YgL9y9hgrFq4LHXyX9AcwVft3ZoP8L8f/Pun9ttHwGZSvjpd/6ffSVeKzso+cCmBRi+r7s+R9ZiJwk2gQ7/mXokPPuOwURRAMlQVOtLGPrB++PPtYrz4APl+JNWlRWknf7TuuNr+qP2eYZRwPwZXT/sGDSz2XricbPqZ4eksr45GfmUgBI3t8iqv89zQOsj1N3ps7RE77HQEbiRvVN8crfXAfIH1yCgJ/iBaS4a3G6pZHY2hHMmz50lXCjSfmkb4IhciwhSoJeVy9Cgsd9hRGEPkxXoXnnGdgCpXo3Ri8js12plhTX0JHwFf6SCjMHojUQMtX5Ed/oikAH/BlNoqmvWcTicfDFEdg3+5FCEfWztPsLFQz9n+HWNWi+VB7yK+Tm9xi2msi1+XmakuFdNuztM4QyFAIvkFHqN+jVbLjFQYrnNW5J91KXtj/+3ydToOXqAPuO/6sAAAA=',compass:'data:image/webp;base64,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',rest:'',new:'',else:'',long:'',bStarter:'',bShinrin:'',bOber:''};
+var LIVE='https://www.pause-to-play.com/post/';
+var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+if(!reduce)document.documentElement.classList.add('motion');
+var R=['i.','ii.','iii.','iv.','v.','vi.','vii.'];
+var FND=['sleep','movement','nourishment','nature','stillness','connection','joy'];
+var FNAME={sleep:'Sleep',movement:'Movement',nourishment:'Nourishment',nature:'Nature',stillness:'Stillness',connection:'Connection',joy:'Play'};
+var FSUB={sleep:'the night that carries the day',movement:'gentle ways back into the body',nourishment:'eating and drinking with attention',nature:'time among trees, water and sky',stillness:'quiet moments in a full day',connection:'the people who make life warmer',joy:'small things done just for the fun of it'};
+var FDESC={sleep:'Small evening and morning rituals that help the night do its quiet work.',movement:'Gentle movement that brings you back into your body.',nourishment:'What we eat and drink, and how it shapes the way we feel, think and rest.',nature:'Minutes among trees, water and sky, close to home or far away.',stillness:'Moments of quiet in a full day, when doing nothing is the point.',connection:'Feeling connected: to the people around you, to places, to nature and to yourself.',joy:'Things done just for the fun of it, from small joys to big adventures: painting, a via ferrata, a ride down a singletrack.'};
+/* one large watercolour per foundation; until Viola sends the rest, the valley stands in */
+var FIMG={sleep:'sleep',movement:'movement',nourishment:'nourishment',nature:'nature',stillness:'stillness',connection:'connection',joy:'joy'};
+
+/* [foundation, pause, why it works, source, seconds, steps]  approved by Viola 2026-10-27 */
+var PZ=[
+ ["sleep", "Thirty minutes before bed, dim the lights and swap the screen for a paper book.", "After reading on a tablet before bed, people took about ten minutes longer to fall asleep, had less dream sleep and felt sleepier the next morning than after reading a printed book.", "Chang et al. (Harvard Medical School), PNAS, 2015", 60, ["Dim the lights in the room.", "Leave your phone to charge outside the bedroom.", "Open a paper book."]],
+ ["movement", "Take a walk with one open question. Don’t chase the answer.", "At Stanford, people came up with about 60% more creative ideas while walking than while sitting, even on a treadmill in a plain room.", "Oppezzo & Schwartz, Journal of Experimental Psychology, 2014", 60, ["Choose one question you carry.", "Step outside and start walking.", "Let the question walk with you. Don’t chase the answer."]],
+ ["nature", "Go outside for twenty minutes. No music. No podcast. No goal.", "Twenty to thirty minutes in a place that felt like nature lowered the stress hormone cortisol most efficiently.", "Hunter et al., Frontiers in Psychology, 2019", 60, ["Choose your twenty minutes now.", "Pick a place with trees or water.", "No phone, no podcast, no step count."]],
+ ["stillness", "Stay in silence two minutes longer than feels comfortable.", "In one study, 67% of men and 25% of women chose to give themselves a mild electric shock rather than sit alone with their thoughts for fifteen minutes. Silence takes practice.", "Wilson et al., Science, 2014", 120, ["Put everything down.", "Sit in the quiet you have.", "When you want to stop, stay two minutes more."]],
+ ["connection", "When you buy your coffee, smile, make eye contact and have a short chat.", "Customers asked to smile and chat briefly with the barista left in a better mood and felt more connected than customers who were simply efficient.", "Sandstrom & Dunn, Social Psychological and Personality Science, 2014", 60, ["When you order, look up.", "Smile and make eye contact.", "Ask one small question, and listen."]],
+ ["nourishment", "Add one new plant to a meal today. Aim for thirty a week.", "People who ate more than 30 different plants a week had more diverse gut bacteria than people who ate 10 or fewer, whatever their diet.", "McDonald et al., mSystems, 2018", 60, ["Look at your next meal.", "Add one plant you haven’t eaten this week: herbs, seeds, a fruit.", "Count it."]],
+ ["joy", "Write down three good things from today.", "People who wrote down three things that went well each day, and why, were still a little happier months later, especially those who kept doing it.", "Seligman et al., American Psychologist, 2005", 90, ["Take a pen, or your notes app.", "Write three small good things.", "For each, write why it happened."]],
+ ["sleep", "Before bed, write tomorrow’s to-do list. Then say: “Noted. We’ll handle this tomorrow.”", "People who spent five minutes writing a to-do list fell asleep about nine minutes faster than people who wrote about what they had already done.", "Scullin et al., Journal of Experimental Psychology: General, 2018", 120, ["Take a pen and paper.", "Write down everything tomorrow needs.", "Say: “Noted. We’ll handle this tomorrow.”"]],
+ ["movement", "Walk for ten minutes after your next meal.", "A review of seven studies found that even two to five minutes of light walking after eating kept blood sugar steadier than sitting or standing.", "Buffey et al., Sports Medicine, 2022", 60, ["Stand up now.", "Walk slowly for one minute.", "Promise yourself ten after lunch."]],
+ ["nature", "Count your minutes in nature this week. Aim for 120.", "In a study of nearly 20,000 people, those who spent at least 120 minutes a week in nature were more likely to report good health and wellbeing. One long visit or several short ones worked equally well.", "White et al., Scientific Reports, 2019", 30, ["Think back over this week.", "Add up your minutes among trees, water or green.", "Plan the rest of your 120."]],
+ ["stillness", "Two breaths in through the nose, one long breath out. Repeat for five minutes.", "In a Stanford study, five minutes a day of this breathing for a month lifted mood more than the same time spent in mindfulness meditation.", "Balban et al., Cell Reports Medicine, 2023", 300, ["Breathe in through the nose.", "Take a second, shorter breath on top.", "Let it all go, slowly, through the mouth."]],
+ ["connection", "With your morning coffee, text one person: “This made me think of you.”", "In studies with more than 5,900 people, those who reached out underestimated how much it was appreciated, most of all when the message came as a surprise.", "Liu et al., Journal of Personality and Social Psychology, 2022", 60, ["Think of someone who crossed your mind lately.", "Write: “This made me think of you.”", "Send it. No need to say more."]],
+ ["nourishment", "Drink a full glass of water before your next coffee.", "Losing just 1.5% of the body’s water, often before you feel really thirsty, left young women with lower mood, more fatigue and more trouble concentrating.", "Armstrong et al., Journal of Nutrition, 2012", 30, ["Fill a glass.", "Drink it slowly, standing still.", "Notice the cold."]],
+ ["joy", "Look for one beautiful thing on your way today.", "Older adults who took a weekly fifteen-minute “awe walk” for eight weeks felt more gratitude and less distress, and their smiles in selfies grew broader.", "Sturm et al., Emotion, 2022", 60, ["On your next walk, slow down.", "Look up, and look closely.", "Stop for the one thing that moves you."]],
+ ["sleep", "Take a warm shower about ninety minutes before bed.", "A review of 13 studies found that a warm bath or shower one to two hours before bed helped people fall asleep about ten minutes faster. It helps the body cool down afterwards, which is the signal for sleep.", "Haghayegh et al., Sleep Medicine Reviews, 2019", 30, ["Decide when you want to be asleep.", "Count back ninety minutes.", "Set a gentle reminder for your shower."]],
+ ["movement", "Walk at a pace where you could still talk.", "In a survey of 1.2 million Americans, people who moved regularly, walking included, reported fewer days when they felt stressed or low than people who did not move at all.", "Chekroud et al., The Lancet Psychiatry, 2018", 60, ["Start walking.", "Speed up until talking takes a little effort.", "Stay there. That is your pace."]],
+ ["nature", "Look at something green for forty seconds.", "Students who looked at a flowering green roof for just forty seconds made fewer mistakes on a dull task afterwards than students who looked at a concrete roof.", "Lee et al., Journal of Environmental Psychology, 2015", 40, ["Find a plant, a tree or a park.", "Look at it, only it.", "Notice how many greens there are."]],
+ ["stillness", "Put your phone in another room for the next hour.", "People whose phone simply lay on the desk, face down and even switched off, did worse on memory and reasoning tests than people who left it in another room.", "Ward et al., Journal of the Association for Consumer Research, 2017", 30, ["Silence your phone.", "Carry it to another room.", "Walk back without it."]],
+ ["connection", "Call someone instead of sending a message.", "People expected a phone call to an old friend to feel awkward and preferred email. In fact the call created a much stronger bond, and was not more awkward.", "Kumar & Epley, Journal of Experimental Psychology: General, 2021", 60, ["Think of someone you miss.", "Decide when you will call.", "Or call now."]],
+ ["nourishment", "Eat your next meal without a screen.", "A review of 24 studies found that eating while distracted makes us eat more, and even more at the next meal.", "Robinson et al., American Journal of Clinical Nutrition, 2013", 60, ["Put the phone face down, away.", "Look at your plate before you start.", "Taste the first three bites."]],
+ ["joy", "Eat something ripe, slowly, standing at the kitchen sink.", "On days when people savoured good moments, those moments lifted their happiness more.", "Jose, Lim & Bryant, Journal of Positive Psychology, 2012", 60, ["Choose something ripe: a peach, a pear, a fig.", "Stand at the sink. No plate, no phone.", "Eat it slowly. Notice the first bite."]],
+ ["sleep", "Have your last coffee before noon.", "A strong dose of caffeine, about four cups of coffee, taken six hours before bed cut sleep by more than an hour, and people barely noticed.", "Drake et al., Journal of Clinical Sleep Medicine, 2013", 30, ["Check the time of your last coffee today.", "After noon, choose a caffeine-free tea.", "Or a glass of warm water."]],
+ ["movement", "Spend ten minutes moving gently after you wake up. Not to perform, only to arrive.", "In a survey of 1.2 million Americans, even gentle movement such as yoga and tai chi went together with fewer days of feeling stressed or low.", "Chekroud et al., The Lancet Psychiatry, 2018", 60, ["Stand beside the bed.", "Roll your shoulders, reach up, bend slowly.", "Move only as far as feels kind."]],
+ ["nature", "Open a window and listen for birds.", "In a study of nearly 1,300 people, seeing or hearing birds was linked to better mental wellbeing for up to eight hours, also in people living with depression.", "Hammoud et al., Scientific Reports, 2022", 60, ["Open a window.", "Close your eyes.", "Count the different calls you hear."]],
+ ["stillness", "Do nothing for sixty seconds. Notice three breaths, one sound, one thing you see.", "People who first did something boring, reading a phone book, then thought of more uses for two plastic cups than people who had not been bored.", "Mann & Cadman, Creativity Research Journal, 2014", 60, ["Sit down and put your phone away.", "Notice three breaths.", "Then one sound, and one thing you see."]],
+ ["connection", "Do one small kind thing before noon.", "A review of 27 studies with over 4,000 people found that acts of kindness raise the wellbeing of the person doing them.", "Curry et al., Journal of Experimental Social Psychology, 2018", 60, ["Think of one person.", "Choose something small: a note, a coffee, a thank you.", "Do it before twelve."]],
+ ["joy", "Do one ordinary thing slowly: pour the tea, brush your hair. Notice its rhythm.", "Students who washed dishes mindfully, giving the task their full attention, felt 27% less nervous and 25% more inspired than students who just washed them.", "Hanley et al., Mindfulness, 2015", 60, ["Choose one ordinary task: tea, hair, dishes.", "Do it at half your usual speed.", "Notice its sounds and its rhythm."]],
+ ["sleep", "Take your first coffee outside, or by an open window.", "After one week of camping with only natural light, people’s body clocks moved about two hours earlier, and their sleep hormone began to rise around sunset.", "Wright et al., Current Biology, 2013", 60, ["Walk to the window or the door.", "Face the daylight.", "Drink slowly. Nothing else."]],
+ ["stillness", "While the kettle boils, just wait. Don’t fill the time.", "A review of 22 studies found that breaks of ten minutes or less left people with more energy and less fatigue.", "Albulescu et al., PLOS ONE, 2022", 60, ["Switch the kettle on.", "Stand still and wait.", "Watch the steam. Nothing else."]],
+ ["stillness", "Close your laptop, write tomorrow’s first task, and say “Done for today” out loud.", "Across 86 studies with more than 38,000 employees, people who mentally switched off from work in their free time were less exhausted and slept better.", "Wendsche & Lohmann-Haislah, Frontiers in Psychology, 2017", 60, ["Write tomorrow’s first task on paper.", "Close the laptop.", "Say “Done for today” out loud."]],
+ ["stillness", "For the task that keeps nagging you, write one line: when and how you will do it.", "Unfinished tasks kept popping into people’s minds until they wrote a specific plan for them. Making the plan was enough to quiet the intrusive thoughts.", "Masicampo & Baumeister, Journal of Personality and Social Psychology, 2011", 60, ["Name the task that keeps coming back to you.", "Write one line: when and how you will do it.", "Close the notebook. It has a plan now."]],
+ ["movement", "Feeling flat? Walk up and down the stairs for ten minutes.", "Tired young women who walked up and down stairs at an easy pace for ten minutes felt more energetic afterwards than after a capsule with a small dose of caffeine.", "Randolph & O’Connor, Physiology & Behavior, 2017", 60, ["Find a staircase.", "Walk up and down at an easy pace.", "After ten minutes, notice your energy."]],
+ ["nature", "Sit where you can see a tree.", "After surgery, patients whose window looked out on trees went home slightly sooner and needed fewer strong painkillers than patients whose window faced a brick wall.", "Ulrich, Science, 1984", 60, ["Find a window or a bench with a view of a tree.", "Sit down.", "Watch its branches move for one minute."]],
+ ["stillness", "Name what you feel, in one word.", "When people put a feeling into words, activity in the amygdala, the brain’s alarm centre, went down.", "Lieberman et al. (UCLA), Psychological Science, 2007", 30, ["Stop and take one breath.", "Ask: what am I feeling right now?", "Name it in one word, quietly or on paper."]],
+ ["sleep", "Wake up at the same time on Saturday, too.", "Students who went to bed and woke up at very irregular times had a body clock running about 2.6 hours later than regular sleepers, and lower grades, even though they slept about as long.", "Phillips et al. (Harvard Medical School), Scientific Reports, 2017", 60, ["Look at the time you woke up today.", "Set the same alarm for Saturday.", "When it rings, open the curtains and let the light in."]],
+ ["joy", "Keep one holiday habit at home today.", "Holidays lift wellbeing, but in a review of 13 studies the lift was gone within the first week back at work. The researchers advise short breaks spread through the year.", "Speth, Wendsche & Wegge, European Psychologist, 2023", 60, ["Think of your last good holiday.", "Pick one habit from it: a slow breakfast, a long walk, no alarm.", "Do it today, at home."]],
+ ["nature", "Take a morning walk in daylight, even when the sky is grey.", "People with winter blues who walked outdoors for an hour each morning for a week felt clearly better than people who sat by a weak indoor lamp.", "Wirz-Justice et al., Journal of Affective Disorders, 1996", 60, ["Dress warmly and step out in the morning.", "Walk wherever you like, under the open sky.", "Stay out as long as you can, up to an hour."]],
+ ["connection", "Hug someone for a few seconds longer than usual.", "In a study of 404 adults, people who got more hugs were partly protected against the effects of stress, and when exposed to a cold virus they had milder symptoms.", "Cohen et al. (Carnegie Mellon), Psychological Science, 2015", 30, ["Choose someone you love.", "Hug them.", "Stay three seconds longer than usual."]],
+ ["nourishment", "Add one more fruit or vegetable to your day.", "Young adults who kept a daily food diary felt calmer, happier and more energetic on days when they ate more fruit and vegetables, and the lift carried into the next day.", "White, Horwath & Conner, British Journal of Health Psychology, 2013", 60, ["Look at what you will eat today.", "Add one fruit or one vegetable.", "Tomorrow, notice how you feel."]],
+ ["joy", "Listen to one song you love with your eyes closed.", "A review of over a hundred studies found that music lowered both felt stress and the body’s stress responses, such as heart rate and stress hormones.", "de Witte et al., Health Psychology Review, 2020", 60, ["Choose one song you love.", "Put on headphones and close your eyes.", "Listen until the very last note."]],
+ ["movement", "Before something you want to remember, walk slowly for ten minutes.", "Ten minutes of very light exercise, about as gentle as yoga, sharpened memory straight away and increased activity in the brain’s memory centre.", "Suwabe et al., PNAS, 2018", 60, ["Before you study or meet someone, stand up.", "Walk slowly for ten minutes.", "Then sit down and begin."]],
+ ["nourishment", "Add a spoonful of something fermented to a meal: yoghurt, kefir or sauerkraut.", "In a small Stanford study, healthy adults who ate more fermented foods for ten weeks had more diverse gut bacteria and lower levels of 19 markers of inflammation.", "Wastyk et al. (Stanford), Cell, 2021", 30, ["Choose one: yoghurt, kefir, sauerkraut or kimchi.", "Add a spoonful to your next meal.", "Do it again tomorrow."]],
+ ["movement", "On your next walk, switch between three fast minutes and three slow ones.", "Adults in their sixties who walked in three-minute fast and slow intervals for five months gained more leg strength and fitness, and lowered their blood pressure more, than people who walked at one steady pace.", "Nemoto et al., Mayo Clinic Proceedings, 2007", 60, ["Start your walk at an easy pace.", "Walk fast for three minutes, then slowly for three.", "Repeat as many times as feels good."]],
+ ["connection", "Write a short thank-you note to someone who helped you.", "People who wrote a thank-you note underestimated how surprised and happy it would make the receiver, and expected it to feel more awkward than it did.", "Kumar & Epley, Psychological Science, 2018", 60, ["Think of someone who helped you.", "Write three sentences: what they did and what it meant.", "Send it today."]],
+ ["joy", "When stress rises, recall one happy memory in detail.", "After a stressful task, people who recalled happy memories had a much smaller rise in the stress hormone cortisol, and felt less low, than people who recalled ordinary ones.", "Speer & Delgado (Rutgers University), Nature Human Behaviour, 2017", 60, ["Close your eyes.", "Recall one happy memory: where you were, who was there.", "Stay with the details for one minute."]],
+ ["sleep", "If you slept badly, move one difficult conversation to tomorrow.", "After a night without sleep, the brain’s alarm centre reacted over 60% more strongly to upsetting pictures than after a normal night’s sleep.", "Yoo et al. (UC Berkeley), Current Biology, 2007", 30, ["Notice: I slept badly.", "Look at today’s plan.", "Move one difficult conversation to tomorrow."]],
+ ["movement", "Tense each part of your body for five seconds, then let go.", "In a single session, progressive muscle relaxation made students feel more relaxed, and their heart rate and skin response moved towards calm too.", "Toussaint et al., Evidence-Based Complementary and Alternative Medicine, 2021", 120, ["Sit or lie down.", "Tense your feet for five seconds, then let go.", "Move up the body: legs, belly, hands, shoulders, face."]],
+ ["nature", "Look up at tall trees, or the sky, for one minute.", "People who looked up at tall eucalyptus trees for one minute felt more awe and were more helpful to a stranger afterwards than people who looked at a tall building.", "Piff et al. (UC Irvine), Journal of Personality and Social Psychology, 2015", 60, ["Find a tall tree or an open sky.", "Stand still and look up.", "Stay for one minute."]],
+ ["connection", "Stroke a dog or a cat for ten minutes.", "Students who petted cats and dogs for ten minutes had lower levels of the stress hormone cortisol afterwards than students who only watched or looked at photos.", "Pendry & Vandagriff, AERA Open, 2019", 60, ["Find a dog or a cat: yours, a friend’s, a neighbour’s.", "Sit down with it.", "Stroke it slowly for ten minutes."]],
+ ["sleep", "Take a ten-minute nap after lunch. Set an alarm.", "After a short night, a ten-minute afternoon nap made people more alert and sharper. Naps of 30 or 90 seconds did not help.", "Tietzel & Lack (Flinders University), Journal of Sleep Research, 2002", 60, ["Set an alarm for ten minutes.", "Lie down or lean back somewhere quiet.", "Get up when it rings, even if you only rested."]],
+ ["connection", "Give one honest compliment today.", "People underestimated how good their compliment would make someone feel, and overestimated how awkward it would be.", "Zhao & Epley, Personality and Social Psychology Bulletin, 2021", 60, ["Notice something you genuinely admire in someone.", "Tell them, in one sentence.", "Then let it land. No need to say more."]],
+ ["nourishment", "At your next meal, put your fork down between bites.", "Women who ate the same meal slowly felt fuller at the end and ate less than when they ate it quickly.", "Andrade, Greene & Melanson, Journal of the American Dietetic Association, 2008", 60, ["Take one bite.", "Put the fork down and chew.", "Pick it up again only when your mouth is empty."]],
+ ["stillness", "Before something important, write your worries down for ten minutes.", "Students who wrote about their worries for ten minutes before an important exam scored better than students who sat quietly.", "Ramirez & Beilock (University of Chicago), Science, 2011", 60, ["Before the big moment, take a sheet of paper.", "Write down every worry for ten minutes.", "Fold the paper and go."]],
+ ["sleep", "Something upset you today? Sleep on it before you decide.", "After a night’s sleep, the brain’s alarm centre reacted less strongly to the same upsetting pictures seen the day before, and people felt less upset by them.", "van der Helm et al. (UC Berkeley), Current Biology, 2011", 30, ["Notice what upset you today.", "Don’t decide or reply tonight.", "Sleep on it, and look again in the morning."]],
+ ["joy", "Take a new route home today.", "On days when people moved through more varied places, they felt happier. Researchers tracked them by phone GPS for three to four months.", "Heller et al. (New York University), Nature Neuroscience, 2020", 60, ["Look at your usual way home.", "Pick one different street.", "Notice one thing you have never seen before."]],
+ ["stillness", "Stuck? Do something easy for ten minutes: fold laundry, water the plants.", "When people were stuck on a creative problem, a break with an easy task that let the mind wander led to more new ideas than a hard task, rest or no break.", "Baird et al., Psychological Science, 2012", 60, ["Notice that you are stuck.", "Do something easy: fold laundry, water the plants.", "After ten minutes, go back to the problem."]],
+ ["nature", "If your thoughts are going round in circles, walk through a park, not along a road.", "After a 90-minute walk in nature, people brooded less and a brain area linked to brooding calmed down. A walk along a busy road did not have this effect.", "Bratman et al. (Stanford), PNAS, 2015", 60, ["Choose a park, a wood or a river path.", "Leave the busy road behind.", "Walk, and let the thoughts loosen."]],
+ ["stillness", "Speak to yourself about a mistake the way you would speak to a friend.", "After a failure, people who were encouraged to be kind to themselves spent more time preparing for a second test than people who were encouraged to boost their self-esteem.", "Breines & Chen (UC Berkeley), Personality and Social Psychology Bulletin, 2012", 60, ["Think of one mistake that is bothering you.", "Ask: what would I say to a friend?", "Say it to yourself, in the same tone."]],
+ ["joy", "Plan something small to look forward to.", "People with a holiday ahead were happier than people with no trip planned. After the trip, the difference soon disappeared: looking forward is part of the joy.", "Nawijn et al., Applied Research in Quality of Life, 2010", 60, ["Pick something small: a walk, a dinner, a film.", "Put it in your calendar.", "Let yourself look forward to it."]],
+ ["stillness", "When your music ends, stay in the silence for two minutes.", "In a study with music, a two-minute silence between pieces lowered heart rate, blood pressure and breathing, even below where they were before the music began.", "Bernardi, Porta & Sleight, Heart, 2006", 120, ["Play one piece of music you love.", "When it ends, don’t start the next one.", "Sit in the silence for two minutes."]]
+];
+var JR=[["sleep-that-heals-how-dreams-reset-your-mood", "Sleep That Heals: How Dreams Reset Your Mood"],["decision-clarity-walk", "The Decision-Clarity Walk"],["forest-bathing-shinrin-yoku-guide", "Forest Bathing (Shinrin-Yoku): How to Start"],["why-silence-feels-uncomfortable", "Why Silence Feels Uncomfortable"],["the-science-of-kindness", "The Science of Kindness in a Disconnected World"],["gut-microbiome-second-brain", "Gut Microbiome: Your “Second Brain”"],["tiny-joys-why-small-moments-make-life-feel-bigger", "Tiny Joys: Why Small Moments Make Life Feel Bigger"],["sleep-that-heals-how-dreams-reset-your-mood", "Sleep That Heals: How Dreams Reset Your Mood"],["hiking-for-mental-health", "Hiking for Mental Health"],["forest-bathing-shinrin-yoku-guide", "Forest Bathing (Shinrin-Yoku): How to Start"],["youre-not-lazy-youre-overstimulated", "You’re Not Lazy, You’re Overstimulated"],["the-science-of-kindness", "The Science of Kindness in a Disconnected World"],["gut-microbiome-second-brain", "Gut Microbiome: Your “Second Brain”"],["tiny-joys-why-small-moments-make-life-feel-bigger", "Tiny Joys: Why Small Moments Make Life Feel Bigger"],["sleep-that-heals-how-dreams-reset-your-mood", "Sleep That Heals: How Dreams Reset Your Mood"],["hiking-for-mental-health", "Hiking for Mental Health"],["forest-bathing-shinrin-yoku-guide", "Forest Bathing (Shinrin-Yoku): How to Start"],["youre-not-lazy-youre-overstimulated", "You’re Not Lazy, You’re Overstimulated"],["the-science-of-kindness", "The Science of Kindness in a Disconnected World"],["gut-microbiome-second-brain", "Gut Microbiome: Your “Second Brain”"],["tiny-joys-why-small-moments-make-life-feel-bigger", "Tiny Joys: Why Small Moments Make Life Feel Bigger"],["sleep-that-heals-how-dreams-reset-your-mood", "Sleep That Heals: How Dreams Reset Your Mood"],["morning-ritual-202020-rule", "The 20/20/20 Morning Routine"],["forest-bathing-shinrin-yoku-guide", "Forest Bathing (Shinrin-Yoku): How to Start"],["strategic-laziness-niksen", "Strategic Laziness: The Art of Doing Nothing"],["the-science-of-kindness", "The Science of Kindness in a Disconnected World"],["why-you-feel-empty", "Why You Feel Empty"],["morning-ritual-202020-rule", "The 20/20/20 Morning Routine"],["strategic-laziness-niksen", "Strategic Laziness: The Art of Doing Nothing"],["feel-guilty-when-resting", "Why You Feel Guilty When Resting"],["strategic-laziness-niksen", "Strategic Laziness: The Art of Doing Nothing"],["hiking-for-mental-health", "Hiking for Mental Health"],["forest-bathing-shinrin-yoku-guide", "Forest Bathing (Shinrin-Yoku): How to Start"],["why-you-feel-empty", "Why You Feel Empty"],["sleep-that-heals-how-dreams-reset-your-mood", "Sleep That Heals: How Dreams Reset Your Mood"],["difference-between-escape-and-restoration", "The Difference Between Escape and Restoration"],["morning-ritual-202020-rule", "The 20/20/20 Morning Routine"],["the-science-of-kindness", "The Science of Kindness in a Disconnected World"],["gut-microbiome-second-brain", "Gut Microbiome: Your “Second Brain”"],["tiny-joys-why-small-moments-make-life-feel-bigger", "Tiny Joys: Why Small Moments Make Life Feel Bigger"],["decision-clarity-walk", "The Decision-Clarity Walk"],["gut-microbiome-second-brain", "Gut Microbiome: Your “Second Brain”"],["hiking-for-mental-health", "Hiking for Mental Health"],["the-science-of-kindness", "The Science of Kindness in a Disconnected World"],["tiny-joys-why-small-moments-make-life-feel-bigger", "Tiny Joys: Why Small Moments Make Life Feel Bigger"],["sleep-that-heals-how-dreams-reset-your-mood", "Sleep That Heals: How Dreams Reset Your Mood"],["feel-guilty-when-resting", "Why You Feel Guilty When Resting"],["when-the-summit-is-no-longer-the-point-in-hiking", "When the Summit Is No Longer the Point"],["the-science-of-kindness", "The Science of Kindness in a Disconnected World"],["sleep-that-heals-how-dreams-reset-your-mood", "Sleep That Heals: How Dreams Reset Your Mood"],["the-science-of-kindness", "The Science of Kindness in a Disconnected World"],["gut-microbiome-second-brain", "Gut Microbiome: Your “Second Brain”"],["youre-not-lazy-youre-overstimulated", "You’re Not Lazy, You’re Overstimulated"],["sleep-that-heals-how-dreams-reset-your-mood", "Sleep That Heals: How Dreams Reset Your Mood"],["difference-between-escape-and-restoration", "The Difference Between Escape and Restoration"],["strategic-laziness-niksen", "Strategic Laziness: The Art of Doing Nothing"],["forest-bathing-shinrin-yoku-guide", "Forest Bathing (Shinrin-Yoku): How to Start"],["why-we-expect-to-feel-better-all-the-time", "Why Do We Expect to Feel Better All the Time?"],["philosophy-of-slowness", "Philosophy of Slowness: What I Learned When I Paused"],["why-silence-feels-uncomfortable", "Why Silence Feels Uncomfortable"]];
+var CLUBP={sleep:'Sleep, Restored',movement:'Seven Mornings',nourishment:'Seven Mornings',nature:'Shinrin-Yoku Reset',stillness:'The Quiet Month',connection:'The Quiet Month',joy:'Seven Mornings'};
+var N=PZ.length;
+var DAYS=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],MON=['January','February','March','April','May','June','July','August','September','October','November','December'];
+var NOW=new Date();
+/* Day numbers count from 1 January 2026 and keep growing (No. 366 = 1 January 2027), so the calendar never resets */
+function doyOf(d){return Math.round((new Date(d.getFullYear(),d.getMonth(),d.getDate())-new Date(2026,0,0))/864e5);}
+var TODAY=doyOf(NOW);
+function dateOf(doy){return new Date(2026,0,doy);}
+/* The Daily Pause calendar: day START (24 October 2026) shows PZ[SEQ[0]], the next day PZ[SEQ[1]], and so on; after the last one it starts again.
+   New pauses are added at the END of PZ and of SEQ, so days that have already been shown never change. Nothing before START exists. */
+var START=297,SEQ=[26,27,28,29,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59];
+function kOf(doy){var L=SEQ.length,i=doy-START;return SEQ[((i%L)+L)%L];}
+function lastDoy(k){for(var d=TODAY;d>=START&&d>TODAY-SEQ.length;d--){if(kOf(d)===k)return d;}return 0;}
+function pz(doy){var k=kOf(doy),p=PZ[k];return {doy:doy,j:JR[k],f:p[0],t:p[1],w:p[2],s:p[3],sec:p[4],steps:p[5],img:IMG[FIMG[p[0]]]};}
+function fmt(d){return DAYS[d.getDay()]+', '+d.getDate()+' '+MON[d.getMonth()];}
+function store(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v);}catch(e){return null;}}
+
+function RING(){var s='<circle cx="300" cy="300" r="292" fill="none" stroke="currentColor" stroke-width=".8"/><circle cx="300" cy="300" r="270" fill="none" stroke="currentColor" stroke-width=".5" stroke-dasharray="1 5"/>';
+ for(var i=0;i<72;i++){var a=i*5*Math.PI/180,l=i%18===0?18:(i%6===0?10:5),r2=292-l;s+='<line x1="'+(300+292*Math.sin(a)).toFixed(1)+'" y1="'+(300-292*Math.cos(a)).toFixed(1)+'" x2="'+(300+r2*Math.sin(a)).toFixed(1)+'" y2="'+(300-r2*Math.cos(a)).toFixed(1)+'" stroke="currentColor" stroke-width="'+(l>5?1:.6)+'"/>';}
+ [['N',0],['E',90],['S',180],['W',270]].forEach(function(d){s+='<text x="300" y="34" text-anchor="middle" transform="rotate('+d[1]+' 300 300)" font-family="EB Garamond,serif" font-size="20" letter-spacing="2" fill="currentColor">'+d[0]+'</text>';});
+ return s;}
+function streakText(){var n=+(store('ptp-streak')||0);return n?'<p class="streak"><b>'+n+'</b> '+(n===1?'day':'days')+' paused in a row</p>':'<p class="streak">Your streak starts with today.</p>';}
+
+function emailLine(id,btn){return '<div class="sub-go"><a class="btn" href="#subscribe">'+btn+' <span aria-hidden="true">›</span></a><p class="soft">Free. You confirm by email and can unsubscribe at any time.</p></div>';}
+
+function pauseBlock(p,isToday,h){var d=dateOf(p.doy);return '<div class="txt"><div class="almanac"><span class="no"><small>No.</small>'+p.doy+'</span><span class="meta">'+(isToday?'Today · ':'')+fmt(d)+' · '+FNAME[p.f]+'</span></div>'+
+ '<'+h+'>'+p.t+'</'+h+'><div class="wiw"><p class="why-l">Why it works</p><p class="why">'+p.w+'</p></div><p class="src">Source: <b>'+p.s+'</b></p>'+
+ '<div class="acts"><button class="btn js-begin" type="button" data-doy="'+p.doy+'">Begin · '+(p.sec<60?p.sec+' seconds':(p.sec/60)+' min')+'</button><button class="btn line js-card" type="button" data-doy="'+p.doy+'">Save as card</button></div>'+
+ '<div class="more"><a href="'+LIVE+p.j[0]+'" target="_blank" rel="noopener">Go deeper: read the story in the Journal <span aria-hidden="true">›</span></a>'+(isToday?streakText():'')+'</div></div>';}
+
+var V={};
+V.home={t:'The Daily Pause · Pause to Play',h:function(){var p=pz(TODAY),mon=TODAY-((NOW.getDay()+6)%7);
+ return '<section class="wrap today"><div class="dial"><img src="'+p.img+'" alt="" width="476" height="472"></div>'+pauseBlock(p,true,'h1')+'</section>'+
+ '<div class="wrap"><div class="tomorrow"><span class="when">Daily</span><p>Tomorrow’s pause arrives in your inbox. <span class="soft" style="font-size:.8em">One short pause, one email, free.</span></p>'+emailLine('em-top','Send it to me')+'</div></div>'+
+
+ '<section class="wrap" style="display:grid;gap:34px"><div class="head"><p class="caps">This week</p><h2>Seven days, seven <em>small pauses</em></h2></div><div class="week">'+
+ [0,1,2,3,4,5,6].map(function(i){var doy=mon+i,d=dateOf(doy),q=pz(doy),day=DAYS[d.getDay()].slice(0,3)+' '+d.getDate();
+  if(doy>TODAY)return '<div class="locked"><span class="d">'+day+'</span><span class="n">No. '+doy+'</span><span class="t">Opens '+DAYS[d.getDay()]+'</span><span class="f">'+FNAME[q.f]+'</span></div>';
+  return '<a href="#p-'+doy+'" class="'+(doy===TODAY?'is-today':'')+'"><span class="d">'+(doy===TODAY?'Today':day)+'</span><span class="n">No. '+doy+'</span><span class="t">'+q.t+'</span><span class="f">'+FNAME[q.f]+'</span></a>';}).join('')+'</div>'+
+ '<div class="alm2"><div class="days">'+[0,1,2,3,4,5,6].map(function(i){var doy=mon+i,d=dateOf(doy);return '<button type="button" data-i="'+i+'" class="'+(doy===TODAY?'on':'')+(doy>TODAY?' fut':'')+'" aria-label="'+DAYS[d.getDay()]+'"><span>'+DAYS[d.getDay()].slice(0,3)+'</span><b>'+d.getDate()+'</b><i></i></button>';}).join('')+'</div>'+
+ [0,1,2,3,4,5,6].map(function(i){var doy=mon+i,d=dateOf(doy),q=pz(doy),nx=pz(doy+1);
+  var top='<span class="d">'+(doy===TODAY?'Today':DAYS[d.getDay()])+' · No. '+doy+' · '+FNAME[q.f]+'</span>';
+  var body=doy>TODAY?'<span class="t lk">Opens '+DAYS[d.getDay()]+'</span>':'<span class="t">'+q.t+'</span>'+(doy===TODAY?'<span class="nx">Tomorrow: a '+FNAME[nx.f]+' pause</span>':'<a class="nx" href="#p-'+doy+'">Take this pause ›</a>');
+  return '<div class="ac2" data-i="'+i+'"'+(doy===TODAY?'':' hidden')+'>'+top+body+'</div>';}).join('')+'</div></section>'+
+
+ '<section class="wrap" style="display:grid;gap:40px"><div class="head"><p class="caps">How it works</p><h2>Rest is not a weekend. It is <em>a minute,</em> repeated.</h2><p class="lede">Most of us don’t need another retreat. We need small, simple things that we actually do, every day, and the reason they work.</p></div>'+
+ '<div class="how how-mk"><div><span class="mkw"><svg class="mk" viewBox="0 0 48 48" width="44" height="44" aria-hidden="true"><path stroke="#7E632E" stroke-width="1.3" fill="none" stroke-linecap="round" stroke-linejoin="round" d="M6 32h36M12 32a12 12 0 0 1 24 0M24 12v-5M11 19l-3-3M37 19l3-3M16 38h16"/></svg></span><h3>One small pause a day</h3><p>Every day, one simple thing to do. Never a list, never a programme you fall behind on.</p></div><div><span class="mkw"><svg class="mk" viewBox="0 0 48 48" width="44" height="44" aria-hidden="true"><path stroke="#7E632E" stroke-width="1.3" fill="none" stroke-linecap="round" stroke-linejoin="round" d="M15 7h18M15 41h18M17 7c0 9 14 11 14 17s-14 8-14 17M31 7c0 9-14 11-14 17s14 8 14 17M20 37c2-2 6-2 8 0"/></svg></span><h3>A minute or two</h3><p>Most pauses take a minute or two. Press Begin and the page guides you, step by step.</p></div><div><span class="mkw"><svg class="mk" viewBox="0 0 48 48" width="44" height="44" aria-hidden="true"><path stroke="#7E632E" stroke-width="1.3" fill="none" stroke-linecap="round" stroke-linejoin="round" d="M24 42V20M24 26c-7 0-11-5-11-12 7 0 11 5 11 12zM24 22c0-7 4-12 11-12 0 7-4 12-11 12zM24 34c-5 0-8-3-9-7M24 31c4 0 7-2 8-6"/></svg></span><h3>Why it works</h3><p>Under every pause, one short fact from a real study tells you why it helps. Simple things, taken seriously.</p></div></div></section>'+
+
+ '<section class="linen band"><div class="wrap" style="display:grid;gap:34px"><div class="head"><p class="caps">The archive</p><h2>The seven <em>foundations</em> of rest</h2><p class="soft">Every pause belongs to one of them. Browse by what you need today.</p></div>'+
+ '<div class="fd2"><div class="stage">'+FND.map(function(f,i){return '<img src="'+IMG[FIMG[f]]+'" alt="" width="800" height="800" data-k="'+f+'"'+(i?'':' class="on"')+'>';}).join('')+'</div><ul class="acc">'+
+ FND.map(function(f,i){return '<li data-k="'+f+'"'+(i?'':' class="on"')+'><button type="button" aria-expanded="'+(i?'false':'true')+'"><span class="h">'+FNAME[f]+'</span><span class="plus" aria-hidden="true"></span></button><div class="fx"><div><p class="s">'+FDESC[f]+'</p><a class="go" href="#archive-'+f+'">Explore '+FNAME[f]+' <span aria-hidden="true">→</span></a></div></div></li>';}).join('')+'</ul></div></div></section>'+
+
+ '<section class="wrap" style="display:grid;gap:40px"><div class="head"><p class="caps">Pause Club</p><h2>When one minute makes you want <em>more</em></h2></div>'+TIERS()+'</section>'+
+
+ '<section class="olive band"><div class="wrap split"><div class="txt"><p class="caps">Pause at Work</p><h2>A daily pause, <em>where your team already is</em></h2><p class="lede">Every morning, one pause appears in Slack or Microsoft Teams. A short pause, the reason it works, and a team that rests a little better together.</p><div style="display:flex;flex-wrap:wrap;gap:16px 28px;align-items:center"><a class="btn" href="#teams">Bring it to your team</a><span class="soft" style="font-size:.95rem">From €3 per person a month</span></div></div><div class="fig" style="display:grid;justify-items:center">'+SLACK(p)+'</div></div></section>'+
+
+ '<section class="wrap author"><div style="display:grid;justify-items:center"><img src="'+IMG.compass+'" alt="" width="199" height="206" style="width:min(240px,60vw)"></div><div style="display:grid;gap:22px"><p class="caps">Why Pause to Play</p><blockquote>“I didn’t need to escape my life. I needed to learn how to pause inside it.”</blockquote><p class="soft">After nearly twenty years in global operations, I took a sabbatical and found that what changed me were small things done daily. The Daily Pause is how I share them.</p><a class="link" href="#about">About me</a></div></section>';}};
+
+function TIERS(){return '<div class="tiers">'+
+ '<div class="tier"><p class="caps">Daily</p><h3>The Daily Pause</h3><p class="price">Free</p><ul><li>One pause every morning</li><li>The reason it works</li><li>The full archive</li></ul><div><a class="btn line" href="#home">Start today</a></div></div>'+
+ '<div class="tier star"><p class="caps">Most chosen</p><h3>Pause Club</h3><p class="price">€9<small>a month</small></p><p class="alt">or €79 a year</p><ul><li>Seven-day and thirty-day pause programmes</li><li>Guided audio for every pause</li><li>All guides included: Shinrin-Yoku Reset, Oberstdorf</li><li>A monthly letter from me</li></ul><div><a class="btn" href="#club">Join the Club</a></div></div>'+
+ '<div class="tier"><p class="caps">For teams</p><h3>Pause at Work</h3><p class="price">€3<small>per person a month</small></p><ul><li>The daily pause in Slack or Teams</li><li>Quarterly team pause sessions</li><li>Sabbatical guidance for staff</li></ul><div><a class="btn line" href="#teams">Request a pilot</a></div></div></div>';}
+
+function SLACK(p){return '<div class="slack" role="img" aria-label="Example: the daily pause posted in a Slack channel"><div class="who"><img src="'+IMG.logo+'" alt=""><div><b>Pause to Play</b> <i>APP</i> <span>07:00</span></div></div><div class="body"><span class="tt">Today’s pause · No. '+p.doy+'</span><span>'+p.t+'</span><span style="color:#616061;font-size:14px">'+p.w.split('. ')[0]+'.</span><div class="acts"><span class="pri">Begin · '+p.sec+'s</span><span>Done</span><span>Tomorrow</span></div><span class="react">\u{1F33F} 14 · ☕ 6 · 12 people paused</span></div></div>';}
+
+V.archive={t:'Archive · The Daily Pause',h:function(f){var list=[];for(var i=0;i<SEQ.length;i++){var doy=TODAY-i;if(doy<START)break;list.push(pz(doy));}
+ return '<section class="wrap" style="padding-top:clamp(56px,8vw,110px);display:grid;gap:36px"><div class="head"><p class="caps">The archive · '+list.length+' pauses</p><h1>Every <em>pause</em>, kept</h1><p class="lede">Each one takes a minute. Each one comes with its reason. Choose a foundation, or begin anywhere.</p></div>'+
+ '<div class="filters" role="group" aria-label="Filter by foundation">'+['all'].concat(FND).map(function(k){return '<button type="button" data-f="'+k+'" aria-pressed="'+((f||'all')===k)+'">'+(k==='all'?'All':FNAME[k])+'</button>';}).join('')+'</div>'+
+ '<ul class="rows" id="arch">'+list.map(function(q){return '<li data-f="'+q.f+'"'+(f&&f!==q.f?' hidden':'')+'><a href="#p-'+q.doy+'"><span class="c">No. '+q.doy+' · '+FNAME[q.f]+'</span><span class="t">'+q.t+'</span><span class="x">'+(q.sec<60?q.sec+' s':(q.sec/60)+' min')+' →</span></a></li>';}).join('')+'</ul></section>';}};
+
+V.pause={t:'',h:function(doy){var p=pz(doy),d=dateOf(doy);
+ return '<section class="wrap pp ppx"><div class="dial" style="max-width:480px;justify-self:center"><img src="'+p.img+'" alt="" width="476" height="472"></div>'+pauseBlock(p,doy===TODAY,'h1')+'</section>'+
+ '<section class="wrap pp" style="padding-top:0"><div class="txt"><h2>How to do it</h2><ol class="steps">'+p.steps.map(function(s){return '<li>'+s+'</li>';}).join('')+'</ol></div><div class="txt"><h2>More from <em>'+FNAME[p.f]+'</em></h2><ul class="rows">'+PZ.map(function(x,i){return [x,i];}).filter(function(o){return o[0][0]===p.f&&o[0][1]!==p.t&&lastDoy(o[1]);}).slice(0,3).map(function(o){var dd=lastDoy(o[1]);return '<li><a href="#p-'+dd+'"><span class="c">No. '+dd+'</span><span class="t">'+o[0][1]+'</span><span class="x">→</span></a></li>';}).join('')+'</ul></div></section>'+
+ '<section class="wrap" style="display:grid;gap:30px"><div class="head"><p class="caps">Go deeper</p><h2>If this pause <em>stays with you</em></h2><p class="soft">One minute is the beginning. Here is where to read, practise and go further.</p></div><ol class="index">'+[[LIVE+p.j[0],'Read','From the Journal',p.j[1],'Free'],['#club','Practise','Pause Club programme',CLUBP[p.f],'Club'],['#deeper','Go further','Guides and personal planning','Shinrin-Yoku Reset, Oberstdorf, sabbatical planning','From \u20ac9.99']].map(function(x,i){return '<li><a href="'+x[0]+'"'+(i===0?' target="_blank" rel="noopener"':'')+'><span class="n">'+R[i]+'</span><span class="h">'+x[1]+'</span><span class="d"><b style="font-weight:500;color:var(--ink)">'+x[3]+'</b><br>'+x[2]+'</span><span class="m">'+x[4]+'</span></a></li>';}).join('')+'</ol><div><a class="link" href="#journal-'+p.f+'">All '+FNAME[p.f]+' articles in the Journal</a></div></section>'+
+ '<section class="olive band"><div class="wrap" style="display:grid;gap:22px;max-width:900px"><p class="caps">Tomorrow, in your inbox</p><h2>Get the next pause <em>before your day begins.</em></h2>'+emailLine('em-p','Send it to me')+'<p class="fine">Free. One email a day. Unsubscribe any time.</p></div></section>';}};
+
+var JP=[
+ ['pause','The Difference Between Escape and Restoration','difference-between-escape-and-restoration','places'],
+ ['play','When the Summit Is No Longer the Point','when-the-summit-is-no-longer-the-point-in-hiking','play'],
+ ['joy','Tiny Joys: Why Small Moments Make Life Feel Bigger','tiny-joys-why-small-moments-make-life-feel-bigger','pause'],
+ ['permission','Why You Feel Guilty When Resting','feel-guilty-when-resting','pause'],
+ ['sab','Why Slowing Down on a Sabbatical Feels Uncomfortable at First','slowing-down-on-a-sabbatical','sabbaticals'],
+ ['sab','What a Sabbatical Really Feels Like','what-a-sabbatical-really-feels-like','sabbaticals'],
+ ['sab','Career Break: Day 1 vs Day 60','career-break-experience','sabbaticals'],
+ ['sab','Career Break Tips: Prepare, Pause and Return with Clarity','career-break-tips','sabbaticals'],
+ ['sab','Taking a Break From Work: Is It the Right Time?','taking-a-break-from-work','sabbaticals'],
+ ['connection','The Science of Kindness in a Disconnected World','the-science-of-kindness','pause'],
+ ['nature','Pause to Bloom: You Don’t Need to Rush Into Spring','dont-rush-into-spring','pause'],
+ ['stillness','Why Silence Feels Uncomfortable','why-silence-feels-uncomfortable','pause'],
+ ['permission','Why Do We Expect to Feel Better All the Time?','why-we-expect-to-feel-better-all-the-time','pause'],
+ ['stillness','You’re Not Lazy, You’re Overstimulated','youre-not-lazy-youre-overstimulated','pause'],
+ ['stillness','Strategic Laziness: The Art of Doing Nothing','strategic-laziness-niksen','pause'],
+ ['permission','Why New Year’s Resolutions Fail','why-new-years-resolutions-fail','pause'],
+ ['gc','Gran Canaria with Kids','gran-canaria-with-kids','places'],
+ ['gc','Las Palmas de Gran Canaria in One Day','las-palmas-de-gran-canaria-one-day-guide','places'],
+ ['gc','Papas Arrugadas with Mojo Rojo & Verde','papas-arrugadas-with-mojo-rojo-verde-authentic-gran-canaria-recipe-tips','places'],
+ ['gc','Potaje de Berros: Watercress Stew for Recovery','potaje-de-berros-gran-canaria-recipe','places'],
+ ['gc','Gran Canaria on a Rainy Day','things-to-do-in-gran-canaria-when-it-rains','places'],
+ ['gc','Puerto de Mogán to Puerto Rico: A Day Trip','puerto-de-mogan-puerto-rico-day-trip','places'],
+ ['gc','Gran Canaria: A Winter Escape to Maspalomas','gran-canaria-travel-guide','places'],
+ ['swabia','Maultaschen: A Journey into Swabian Cuisine','swabian-maultaschen','places'],
+ ['swabia','Tübingen: Stocherkahn & Old Town','t%C3%BCbingen-travel-guide','places'],
+ ['permission','Why You Feel Empty (Even When Life Looks Good)','why-you-feel-empty','pause'],
+ ['sleep','Sleep That Heals: How Dreams Reset Your Mood','sleep-that-heals-how-dreams-reset-your-mood','pause'],
+ ['alps','Meersburg: History over Lake Constance','meersburg-travel-guide-lake-constance','places'],
+ ['ob','Best Time to Visit Oberstdorf','best-time-to-visit-oberstdorf','places'],
+ ['ob','Easy Hikes in Oberstdorf','easy-hikes-oberstdorf','places'],
+ ['ob','Oberstdorf: Walser Roots to Today','oberstdorf-history-culture-guide','places'],
+ ['ob','Oberstdorf with Kids','oberstdorf-with-kids','places'],
+ ['ob','Oberstdorf: The Complete Travel Guide','oberstdorf-travel-guide','places'],
+ ['stillness','The Decision-Clarity Walk','decision-clarity-walk','pause'],
+ ['play','Vertical Meditation: Moiry Via Ferrata','vertical-meditation-moiry-via-ferrata-complete-guide','play'],
+ ['movement','Hiking for Mental Health','hiking-for-mental-health','pause'],
+ ['alps','Käsespätzle from Brandnertal','kaesespaetzle-recipe-brandnertal','places'],
+ ['alps','Brandnertal: A Hidden Valley in Vorarlberg','brandnertal-travel-guide','places'],
+ ['path','Candles, Years, and the Spaces Between','candles-years-spaces-between','about'],
+ ['play','Via Ferrata: How the Mountain Builds Focus','philosophy-of-the-climb-via-ferrata-experience','play'],
+ ['crete','Cretan Boureki with Filo Crust','inspiredflavors','places'],
+ ['path','Sometimes the Mountains Are the Only Ones Who Understand','https-www-pause-to-play-com-post-the-mountains-are-calling','about'],
+ ['play','Samaria Gorge: Route, Tickets & Ferry','samaria-gorge-hike-guide','play'],
+ ['nourishment','Gut Microbiome: Your “Second Brain”','gut-microbiome-second-brain','pause'],
+ ['nature','Forest Bathing (Shinrin-Yoku): How to Start','forest-bathing-shinrin-yoku-guide','pause'],
+ ['path','Philosophy of Slowness','philosophy-of-slowness','about'],
+ ['sleep','The 20/20/20 Morning Routine','morning-ritual-202020-rule','pause']
+];
+var JGROUPS=[['all','All'],['sleep','Sleep'],['movement','Movement'],['nourishment','Nourishment'],['nature','Nature'],['stillness','Stillness'],['connection','Connection'],['joy','Joy'],['permission','Rest without guilt'],['play','Play'],['places','Places'],['sab','Sabbaticals'],['path','My path']];
+function jmatch(p,g){return g==='all'||p[0]===g||(g==='places'&&p[3]==='places')||(g==='play'&&p[3]==='play');}
+V.journal={t:'Journal · Pause to Play',h:function(g){g=g||'all';return '<section class="wrap" style="padding-top:clamp(56px,8vw,110px);display:grid;gap:36px"><div class="head"><p class="caps"><a href="#deeper" style="text-decoration:none">Go deeper</a> · Journal · '+JP.length+' articles</p><h1>The <em>Journal</em></h1><p class="lede">Every article, kept. Where a daily pause stays with you, this is where to read further.</p></div>'+
+ '<div class="filters" role="group" aria-label="Filter articles">'+JGROUPS.map(function(x){return '<button type="button" data-g="'+x[0]+'" aria-pressed="'+(x[0]===g)+'">'+x[1]+'</button>';}).join('')+'</div>'+
+ '<ul class="rows" id="jr">'+JP.map(function(p){var lab=(JGROUPS.filter(function(x){return x[0]===p[0];})[0]||JGROUPS.filter(function(x){return x[0]===p[3];})[0]||['','Places'])[1];return '<li data-t="'+p[0]+'" data-h="'+p[3]+'"'+(jmatch(p,g)?'':' hidden')+'><a href="'+LIVE+p[2]+'" target="_blank" rel="noopener"><span class="c">'+lab+'</span><span class="t">'+p[1]+'</span><span class="x">Read ↗</span></a></li>';}).join('')+'</ul></section>';}};
+
+V.club={t:'Pause Club · Pause to Play',h:function(){return '<section class="wrap" style="padding-top:clamp(56px,8vw,110px);display:grid;gap:40px"><div class="head"><p class="caps">Pause Club</p><h1>When one minute makes you want <em>more</em></h1><p class="lede">The daily pause stays free, always. The Club is for the days you want to go further: guided programmes, audio, and every guide I have written.</p></div>'+TIERS()+'</section>'+
+ '<section class="wrap" style="display:grid;gap:36px"><div class="head"><p class="caps">Inside the Club</p><h2>Programmes that fit a <em>real</em> week</h2></div><ol class="index">'+[['Seven Mornings','A first week of pauses, from light to breath to sleep.','7 days'],['The Quiet Month','Thirty pauses that build into a daily habit.','30 days'],['Sleep, Restored','Evening pauses for people who wake at three.','14 days'],['Shinrin-Yoku Reset','Seven days of forest bathing, with the workbook.','7 days'],['Before the Sabbatical','For the months when you are deciding whether to stop.','21 days']].map(function(x,i){return '<li><a href="#club"><span class="n">'+R[i]+'</span><span class="h">'+x[0]+'</span><span class="d">'+x[1]+'</span><span class="m">'+x[2]+'</span></a></li>';}).join('')+'</ol></section>'+
+ '<section class="olive band"><div class="wrap" style="display:grid;gap:22px;max-width:900px"><p class="caps">Founding members</p><h2>The first thousand members keep €59 a year, <em>for life.</em></h2>'+emailLine('em-c','Reserve my place')+'</div></section>';}};
+
+V.teams={t:'Pause at Work · Pause to Play',h:function(){var p=pz(TODAY);return '<section class="wrap split" style="padding-top:clamp(56px,8vw,110px)"><div class="txt"><p class="caps">Pause at Work</p><h1>A daily pause, <em>where your team already is</em></h1><p class="lede">One pause each morning in Slack or Microsoft Teams. It takes a minute, carries its reason, and gives people permission to rest, from the top.</p><div><a class="btn" href="#pilot">Request a free pilot</a></div></div><div class="fig" style="display:grid;justify-items:center">'+SLACK(p)+'</div></section>'+
+ '<section class="wrap" style="display:grid;gap:40px"><div class="head"><p class="caps">How it works</p><h2>Three steps, <em>no new app</em></h2></div><div class="how"><div><h3>Install</h3><p>Add Pause to Play to Slack or Teams and choose a channel. Five minutes for your IT team.</p></div><div><h3>Pause daily</h3><p>Every workday at a time you choose, the pause appears. People press Begin, or simply read it.</p></div><div><h3>See it work</h3><p>A quiet monthly summary: how many people paused, and which pauses your team loved. Never individual tracking.</p></div></div></section>'+
+ '<section class="wrap" style="display:grid;gap:36px"><div class="head"><p class="caps">Plans</p><h2>Simple, per <em>person</em></h2></div><ul class="carte"><li><h3>Daily Pause for teams</h3><span class="price"><small>per person / month</small>€3</span><p>The daily pause in Slack or Teams, the archive, and the monthly summary.</p></li><li><h3>Pause at Work, complete</h3><span class="price"><small>per person / month</small>€6</span><p>Adds Pause Club for every employee and a quarterly live team pause session with me.</p></li><li><h3>Sabbatical programme</h3><span class="price"><small>from</small>€1,500</span><p>For companies that offer sabbaticals: planning sessions for each employee before, during and after their break.</p></li></ul></section>'+
+ '<section class="wrap" id="pilot-sec" style="display:grid;gap:36px;scroll-margin-top:110px"><div class="head"><p class="caps">Free pilot · 30 days</p><h2>Try it with <em>one team</em></h2></div><form class="form" id="pilotForm" novalidate><div class="two"><div class="field"><label for="pl-name">Your name</label><input id="pl-name" type="text" autocomplete="name"></div><div class="field"><label for="pl-mail">Work email</label><input id="pl-mail" type="email" required autocomplete="email"></div></div><div class="two"><div class="field"><label for="pl-co">Company</label><input id="pl-co" type="text" required autocomplete="organization"></div><div class="field"><label for="pl-size">Team size</label><select id="pl-size" required><option value="">Choose one</option><option>Under 20</option><option>20 to 100</option><option>100 to 1,000</option><option>More than 1,000</option></select></div></div><p id="pl-err" role="alert" hidden style="color:#8A2F20">Please add your work email, company and team size.</p><div><button class="btn" type="submit">Request my pilot</button></div></form></section>';}};
+
+V.deeper={t:'Go deeper · Pause to Play',h:function(){return '<section class="wrap" style="padding-top:clamp(56px,8vw,110px);display:grid;gap:40px"><div class="head"><p class="caps">Go deeper</p><h1>When a minute is not <em>enough</em></h1><p class="lede">Read further in the Journal, keep a guide, or plan a bigger pause with me: a week in the forest, a slow trip, a sabbatical.</p></div></section>'+
+ '<section class="wrap" style="display:grid;gap:30px"><div class="head"><p class="caps">Read · Journal</p><h2>All '+JP.length+' <em>articles</em></h2><p class="soft">Essays, stories and guides, free to read. Choose where to begin.</p></div><ol class="index">'+[['permission','Rest without guilt','Permission, emptiness, overstimulation'],['nature','Nature','Forest bathing, spring, slow seasons'],['sleep','Sleep','Dreams, mornings, recovery'],['play','Play','Via ferrata, gorges, summits'],['places','Places','Oberstdorf, Gran Canaria, the Alps, Crete'],['sab','Sabbaticals','Deciding, preparing, living it'],['all','Everything','The full Journal']].map(function(x,i){var n=JP.filter(function(p){return jmatch(p,x[0]);}).length;return '<li><a href="#journal-'+x[0]+'"><span class="n">'+R[i]+'</span><span class="h">'+x[1]+'</span><span class="d">'+x[2]+'</span><span class="m">'+n+' articles</span></a></li>';}).join('')+'</ol></section>'+
+ '<section class="wrap" style="display:grid;gap:40px"><div class="head"><p class="caps">Keep · Guides</p><h2>Guides for doing it <em>yourself</em></h2></div>'+
+ '<div class="shelf"><figure><img src="'+IMG.bStarter+'" alt="The Pause Starter Map" width="190" height="270"><figcaption><span class="free">Free</span> · Pause Starter Map</figcaption></figure><figure><img src="'+IMG.bShinrin+'" alt="Shinrin-Yoku Reset guide" width="166" height="244"><figcaption>Shinrin-Yoku Reset · €14.90</figcaption></figure><figure><img src="'+IMG.bOber+'" alt="Oberstdorf Starter Guide" width="174" height="246"><figcaption>Oberstdorf Starter Guide · €9.99</figcaption></figure></div></section>'+
+ '<section class="wrap" style="display:grid;gap:36px"><div class="head"><p class="caps">Personal planning</p><h2>Plan a bigger pause <em>with me</em></h2></div><ul class="carte"><li><h3>Pause Clarity Session</h3><span class="price"><small>60 min</small>€149</span><p>For when you feel unsure and need clarity before deciding what kind of pause you need.</p></li><li><h3>Sabbatical Planning</h3><span class="price"><small>from</small>€299</span><p>Timing, money, pacing and the return, in one plan that fits your actual life.</p></li><li><h3>Intentional Journey Planning</h3><span class="price"><small>from</small>€249</span><p>Slower, deeper travel built around your rhythm and energy.</p></li></ul><div><a class="btn" href="https://www.pause-to-play.com/plan-your-pause" target="_blank" rel="noopener">Request a session</a></div></section>';}};
+
+V.about={t:'About · Pause to Play',h:function(){return '<section class="wrap author" style="padding-top:clamp(56px,8vw,110px)"><div class="portrait" role="img" aria-label="Placeholder for the founder portrait">Your portrait</div><div style="display:grid;gap:22px"><p class="caps">About</p><h1>Hi, I’m <em>[your name]</em>.</h1><p class="lede">For nearly twenty years I worked in international operations, most recently as a Global Operations Director. Then I paused.</p></div></section>'+
+ '<div class="wrap statement"><p class="caps k">What I learned</p><div class="t"><p class="big">The big break changed my direction. The small daily pauses changed my life.</p><p class="soft" style="max-width:58ch">Pause to Play shares those small things, one a day, with the reason each one works. Simple things, taken seriously.</p><a class="link" href="#home">Today’s pause</a></div></div>';}};
+
+/* ---------- share card (canvas) ---------- */
+function wrapText(ctx,text,maxW){var w=text.split(' '),lines=[],l='';w.forEach(function(x){var t=l?l+' '+x:x;if(ctx.measureText(t).width>maxW&&l){lines.push(l);l=x;}else l=t;});lines.push(l);return lines;}
+function makeCard(doy){var p=pz(doy),c=document.createElement('canvas');c.width=1080;c.height=1350;var x=c.getContext('2d');
+ x.fillStyle='#FBF9F4';x.fillRect(0,0,1080,1350);x.strokeStyle='#B8964F';x.lineWidth=2;x.strokeRect(40,40,1000,1270);x.lineWidth=1;x.strokeRect(54,54,972,1242);
+ var im=new Image();im.crossOrigin='anonymous';im.onload=function(){x.drawImage(im,390,96,300,300*im.height/im.width);
+  x.textAlign='center';x.fillStyle='#7E632E';x.font='500 28px "EB Garamond", serif';x.fillText(('NO. '+doy+'  ·  '+FNAME[p.f]).toUpperCase().split('').join(' '),540,500);
+  /* title, then the Why it works fact under it (Viola 2026-10-27) */
+  x.fillStyle='#38382A';x.font='500 64px "EB Garamond", serif';var ls=wrapText(x,p.t,880),lh=76;if(ls.length>3){x.font='500 56px "EB Garamond", serif';ls=wrapText(x,p.t,880);lh=66;}
+  ls.forEach(function(l,i){x.fillText(l,540,590+i*lh);});var y=590+(ls.length-1)*lh+78;
+  x.fillStyle='#7E632E';x.font='500 22px "EB Garamond", serif';x.fillText('WHY IT WORKS'.split('').join(' '),540,y);
+  x.fillStyle='#4A4A3C';x.font='300 30px Jost, sans-serif';var fs=wrapText(x,p.w,820);fs.forEach(function(l,i){x.fillText(l,540,y+52+i*44);});y+=52+(fs.length-1)*44+52;
+  x.fillStyle='#7E632E';x.font='300 23px Jost, sans-serif';wrapText(x,'Source: '+p.s,820).forEach(function(l,i){x.fillText(l,540,y+i*32);});
+  x.fillStyle='#7E632E';x.font='italic 400 40px "EB Garamond", serif';x.fillText('Pause to Play',540,1210);x.fillStyle='#5C5B4B';x.font='300 26px Jost, sans-serif';x.fillText('pause-to-play.com  ·  one simple pause a day',540,1252);
+  var name='pause-'+doy+'.png';
+  function local(){try{var a=document.createElement('a');a.download=name;a.href=c.toDataURL('image/png');document.body.appendChild(a);a.click();a.remove();toast('Card saved. Share it, or keep it.');}catch(e){toast('Saving is not available here.');}}
+  showCard(c,name);};
+ im.src=p.img;}
+var tt;function toast(m){var t=document.getElementById('toast');t.textContent=m;t.classList.add('on');clearTimeout(tt);tt=setTimeout(function(){t.classList.remove('on');},2600);}
+
+/* ---------- guided pause ---------- */
+var still=document.getElementById('still'),stillIn=document.getElementById('stillIn'),lastFocus=null,timerId=0;
+function begin(doy){var p=pz(doy),left=p.sec,step=0,C=942.5;lastFocus=document.activeElement;
+ stillIn.innerHTML='<p class="eyebrow">No. '+doy+' · '+FNAME[p.f]+'</p><div class="timer"><svg viewBox="0 0 320 320" aria-hidden="true"><circle class="tr" cx="160" cy="160" r="150" fill="none" stroke-width="1"/><circle class="pg" id="pg" cx="160" cy="160" r="150" fill="none" stroke-width="2"/></svg><img src="'+p.img+'" alt=""><span class="sec" id="sec">'+left+'</span></div><p class="inst" id="inst" aria-live="polite">'+p.steps[0]+'</p><button class="btn line plain" type="button" id="endEarly">End the pause</button>';
+ still.hidden=false;requestAnimationFrame(function(){still.classList.add('on');});
+ document.getElementById('endEarly').addEventListener('click',closeStill);setTimeout(function(){document.getElementById('endEarly').focus();},60);
+ var pg=document.getElementById('pg'),sec=document.getElementById('sec'),inst=document.getElementById('inst'),total=p.sec;
+ clearInterval(timerId);timerId=setInterval(function(){left--;pg.style.strokeDashoffset=(C*left/total).toFixed(1);sec.textContent=Math.max(0,left);
+  var s=Math.min(p.steps.length-1,Math.floor((total-left)/total*p.steps.length));if(s!==step){step=s;inst.textContent=p.steps[s];}
+  if(left<=0){clearInterval(timerId);done(p);}},1000);}
+function done(p){var last=store('ptp-last'),n=+(store('ptp-streak')||0);if(p.doy===TODAY&&last!==String(TODAY)){n=(last===String(TODAY-1))?n+1:1;store('ptp-streak',n);store('ptp-last',TODAY);}
+ stillIn.innerHTML='<img src="'+p.img+'" alt="" style="width:min(220px,50vw)"><p class="eyebrow">Paused</p><p class="q">That was your minute.</p>'+(n?'<p class="streak"><b>'+n+'</b> '+(n===1?'day':'days')+' in a row</p>':'')+'<div class="done-row"><button class="btn js-card" type="button" data-doy="'+p.doy+'">Save as card</button><button class="btn line plain" type="button" id="backBtn">Return</button></div>';
+ stillIn.querySelector('.js-card').addEventListener('click',function(){makeCard(p.doy);});document.getElementById('backBtn').addEventListener('click',closeStill);document.getElementById('backBtn').focus();}
+/* Seven foundations: one large watercolour that changes as you hover or tap a name (Viola chose D+, 2026-10-27) */
+/* the watercolour starts level with the first line of the title, right under the number and date (Viola 2026-10-27) */
+function alignDial(root){root.querySelectorAll('.today,.ppx').forEach(function(t){var d=t.querySelector('.dial'),h=t.querySelector('h1,h2'),e=t.querySelector('.src')||t.querySelector('.why');if(!d||!h||!e)return;
+ d.style.marginTop='0px';if(window.innerWidth<=900)return;var top=h.getBoundingClientRect().top,bot=e.getBoundingClientRect().bottom,r=d.getBoundingClientRect();
+ var cs=getComputedStyle(h),fs=parseFloat(cs.fontSize),lh=parseFloat(cs.lineHeight)||fs;d.style.marginTop=Math.max(0,Math.round(top-r.top+(lh-fs)/2-fs*.12))+'px';});}
+function wireDial(root){alignDial(root);if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){alignDial(root);});if(window.__dialRs)return;window.__dialRs=1;var rt;window.addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(function(){alignDial(root);},120);});}
+function wireAlm(root){root.querySelectorAll('.alm2').forEach(function(a){var bs=a.querySelectorAll('.days button'),cs=a.querySelectorAll('.ac2');bs.forEach(function(b){b.addEventListener('click',function(){bs.forEach(function(x){x.classList.toggle('on',x===b);});cs.forEach(function(c){c.hidden=c.dataset.i!==b.dataset.i;});});});});}
+function wireFound(root){var lis=root.querySelectorAll('.fd2 .acc li'),ims=root.querySelectorAll('.fd2 .stage img');
+ lis.forEach(function(li){var b=li.querySelector('button');function on(){lis.forEach(function(x){x.classList.toggle('on',x===li);x.querySelector('button').setAttribute('aria-expanded',x===li?'true':'false');});ims.forEach(function(im){im.classList.toggle('on',im.dataset.k===li.dataset.k);});}
+  b.addEventListener('click',on);b.addEventListener('mouseenter',function(){if(window.matchMedia&&matchMedia('(hover:hover)').matches)on();});});}
+function closeStill(){clearInterval(timerId);still.classList.remove('on');setTimeout(function(){still.hidden=true;stillIn.innerHTML='';},reduce?0:1200);if(lastFocus)lastFocus.focus();var s=document.querySelector('.streak');if(s&&location.hash.replace('#','')in{'':1,home:1})s.outerHTML=streakText();}
+var lastY=0;document.addEventListener('click',function(e){lastY=e.pageY||lastY;},true);
+function showCard(c,name){var box=document.getElementById('cardbox'),url=c.toDataURL('image/png');
+ box.innerHTML='<p class="caps">Your Daily Pause card</p><img src="'+url+'" alt="Daily Pause card"><p>Keep it, or share it with someone who needs a pause.</p><div class="row"><button class="btn" type="button" id="cardSave">Save card</button><button class="ghost" type="button" id="cardClose">Close</button></div>';
+ box.style.top=Math.max(0,lastY-300)+'px';box.hidden=false;
+ document.getElementById('cardClose').addEventListener('click',function(){box.hidden=true;});
+ /* Wix frames block direct downloads, so the card opens as an image in a new tab, ready to save */
+ document.getElementById('cardSave').addEventListener('click',function(){c.toBlob(function(bl){var u=URL.createObjectURL(bl),w=null;try{w=window.open(u,'_blank');}catch(e){}
+  if(!w){var a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();}},'image/png');});
+ try{box.scrollIntoView({block:'start',behavior:'smooth'});}catch(e){}}
+var main=document.getElementById('main');
+main.innerHTML='<div class="view">'+V.home.h()+'</div>';
+main.querySelectorAll('.js-begin').forEach(function(b){b.addEventListener('click',function(){place(b);begin(+b.dataset.doy);});});
+main.querySelectorAll('.js-card').forEach(function(b){b.addEventListener('click',function(){makeCard(+b.dataset.doy);});});
+wireFound(main);wireAlm(main);wireDial(main);window.__pz=pz;window.__kOf=kOf;window.__FN=FNAME;window.__DAYS=DAYS;window.__dateOf=dateOf;
+main.querySelectorAll('.js-signup').forEach(function(f){f.addEventListener('submit',function(e){e.preventDefault();var i=f.querySelector('input');if(!/.+@.+\..+/.test(i.value)){i.setAttribute('aria-invalid','true');i.value='';i.placeholder='Please enter a valid email';i.focus();return;}f.outerHTML='<p class="thanks" role="status">Thank you. See you tomorrow at seven.</p>';});});
+function place(el){var top=Math.max(0,el.getBoundingClientRect().top+window.scrollY-420);still.style.top=top+'px';setTimeout(function(){try{still.scrollIntoView({block:'start',behavior:'smooth'});}catch(e){}},50);}
+/* links: past days of the week open that day's pause right here; everything else goes to the Wix page in LINKS */
+main.addEventListener('click',function(e){var a=e.target.closest('a[href^="#"]');if(!a)return;var h=a.getAttribute('href').slice(1);e.preventDefault();
+ if(/^p-\d+$/.test(h)){place(a);begin(+h.slice(2));return;}
+ if(h==='home')window.scrollTo(0,0);});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){if(!still.hidden)closeStill();document.getElementById('cardbox').hidden=true;}});
+var tb=document.getElementById('toast');new MutationObserver(function(){if(tb.classList.contains('on'))tb.style.top=(lastY+40)+'px';}).observe(tb,{attributes:true});
+/* real links to the Wix pages, opened in the whole browser window */
+main.querySelectorAll('a[href^="#"]').forEach(function(a){var h=a.getAttribute('href').slice(1);if(/^p-\d+$/.test(h)||h==='home')return;a.href=/^archive-[a-z]+$/.test(h)?LINKS.archive+'?f='+h.slice(8):(LINKS[h.split('-')[0]]||LINKS.archive);a.target='_top';});
+})();
+</script><script>(function(){Element.prototype.scrollIntoView=function(){};/* never scroll the Wix page underneath */
+var HDR=72;/* room for the sticky Wix menu bar */var V={top:0,height:window.innerHeight};var st=document.getElementById('still'),cb=document.getElementById('cardbox');
+function fit(){var H=document.documentElement.scrollHeight,h=Math.min(H,V.height),t=Math.max(0,Math.min(V.top,H-h));
+ [st,cb].forEach(function(o){if(o&&!o.hidden){o.style.top='0px';o.style.height=H+'px';}});
+ if(st&&!st.hidden){var inn=st.querySelector('.in');if(inn)inn.style.marginTop=Math.max(0,Math.round(t+(h-inn.offsetHeight)/2))+'px';}
+ if(cb&&!cb.hidden){var im=cb.querySelector('img');if(im){im.style.maxHeight=Math.max(200,h-330)+'px';im.style.width='auto';im.style.maxWidth='88%';}
+  var kids=[].slice.call(cb.children),ch=0;kids.forEach(function(k){ch+=k.offsetHeight+14;});cb.style.paddingTop=Math.max(0,Math.round(t+(h-ch)/2))+'px';}}
+if('IntersectionObserver' in window){var th=[];for(var i=0;i<=200;i++)th.push(i/200);
+ new IntersectionObserver(function(es){var e=es[es.length-1],r=e.intersectionRect,b=e.boundingClientRect;if(r.height>0){var tp=Math.round(r.top-b.top),ht=Math.round(r.height);if(tp>0){tp+=HDR;ht-=HDR;}V={top:tp,height:Math.max(200,ht)};}fit();},{threshold:th}).observe(document.documentElement);}
+[st,cb].forEach(function(o){if(o)new MutationObserver(function(){setTimeout(fit,0);setTimeout(fit,300);}).observe(o,{attributes:true,attributeFilter:['hidden','class'],childList:true,subtree:true});});
+window.addEventListener('scroll',fit,{passive:true});})();</script></body></html>
