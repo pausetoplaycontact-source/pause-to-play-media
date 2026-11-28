@@ -19,7 +19,7 @@ body{background:var(--ivory);color:var(--ink);font-family:var(--body);font-weigh
 h1{font-family:var(--disp);font-weight:500;font-size:clamp(36px,9vw,50px);line-height:1.02;letter-spacing:-.01em;margin:16px 0 10px}
 h1 i{font-weight:400;color:var(--gold-ink)}
 .lede{color:var(--soft);margin:0 auto;max-width:33ch}
-.dial{position:relative;width:min(80vw,350px);aspect-ratio:1;margin:22px auto 6px;touch-action:none;user-select:none;-webkit-user-select:none}
+.dial{position:relative;width:min(80vw,350px);aspect-ratio:1;margin:22px auto 6px;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
 .dial svg.ring{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
 .lens{position:absolute;inset:10%;border-radius:50%;overflow:hidden;background:radial-gradient(circle at 50% 42%,#fff,var(--ivory) 62%,var(--linen))}
 .lens img{position:absolute;inset:4%;width:92%;height:92%;object-fit:contain;pointer-events:none}
@@ -57,8 +57,17 @@ h1 i{font-weight:400;color:var(--gold-ink)}
 .why{font-size:15px;color:var(--soft);max-width:36ch;margin:16px auto 0;padding-top:14px;border-top:1px solid var(--rule)}
 .why b{font-weight:400;color:var(--ink)}
 .dbg{font:12px/1.4 ui-monospace,monospace;color:var(--soft);margin-top:10px;white-space:pre}
+.hint{position:absolute;left:50%;bottom:16%;transform:translateX(-50%);font:400 12px/1 var(--body);letter-spacing:.14em;text-transform:uppercase;color:var(--gold-ink);background:rgba(251,249,244,.92);border:1px solid var(--gold);border-radius:999px;padding:9px 16px;white-space:nowrap;pointer-events:none;transition:opacity .4s}
+.dial.holdable{cursor:pointer}
+.dial.holdable .lens{transition:transform .5s ease}
+.dial.holdable.wait-hold .glow{animation:invite 2.6s ease-in-out infinite}
+.dial.held .lens{transform:scale(.975)}
+@keyframes invite{0%,100%{box-shadow:0 0 0 0 rgba(184,150,79,0)}50%{box-shadow:0 0 0 7px rgba(184,150,79,.22)}}
+.howto{list-style:none;counter-reset:h;padding:0;margin:18px auto 0;max-width:32ch;text-align:left;font-size:15px;color:var(--soft)}
+.howto li{counter-increment:h;padding:7px 0 7px 34px;position:relative;border-top:1px solid var(--rule)}
+.howto li::before{content:counter(h);position:absolute;left:2px;top:8px;width:22px;height:22px;border:1px solid var(--gold);border-radius:50%;font:400 12px/21px var(--body);text-align:center;color:var(--gold-ink)}
 [hidden]{display:none!important}
-@media (prefers-reduced-motion:reduce){.glow,.meter .dot,.cue{transition:none}}
+@media (prefers-reduced-motion:reduce){.dial.holdable.wait-hold .glow{animation:none}.glow,.meter .dot,.cue{transition:none}}
 </style>
 
 </head><body><main class="app">
@@ -79,6 +88,7 @@ h1 i{font-weight:400;color:var(--gold-ink)}
       <img class="ghost" id="ghost" alt="">
       <img class="bloom" id="bloom" alt="">
     </div>
+    <div class="hint" id="hint" hidden></div>
   </div>
 
   <!-- start -->
@@ -91,7 +101,7 @@ h1 i{font-weight:400;color:var(--gold-ink)}
       <li>A quiet room works best.</li>
     </ul>
     <div class="row"><button class="btn" id="go">Begin</button></div>
-    <button class="link" id="goHold">No microphone? Breathe with your finger</button>
+    <button class="link" id="goHold">No microphone? Breathe with your fingertip instead</button>
     <p class="fine">Your microphone only listens for the sound of your breath, right here on your phone. Nothing is recorded, saved or sent.</p>
   </section>
 
@@ -103,6 +113,11 @@ h1 i{font-weight:400;color:var(--gold-ink)}
     </div>
     <p class="cue" id="cue" aria-live="polite"></p>
     <p class="sub" id="sub"></p>
+    <ol class="howto" id="howto" hidden>
+      <li>Breathe in through your nose.</li>
+      <li>Touch and hold the circle while you breathe out, slowly.</li>
+      <li>Let go as you breathe in again.</li>
+    </ol>
     <div class="row"><button class="btn ghost" id="stop">End</button></div>
     <div class="dbg" id="dbg" hidden></div>
   </section>
@@ -164,19 +179,26 @@ function cue(t,warn,sub){if(t!==cueT){cueT=t;$("cue").textContent=t}$("cue").cla
 // state: "wait" (breathe in) | "out" (soft exhale) | "hot" (too strong)
 let st="wait", outStart=0, quietSince=0, lastEnd=0, hotTime=0, outGood=0;
 function startOut(t){st="out";outStart=t;hotTime=0;outGood=0}
+function hint(s){const h=$("hint");h.hidden=!s;if(h.textContent!==s)h.textContent=s;$("dial").classList.toggle("wait-hold",mode==="hold"&&st==="wait")}
 function endOut(t){
   const d=(t-outStart)/1000;
   st="wait";quietSince=t;lastEnd=t;
   if(mode==='mic'&&outLv.length){outLv.sort((a,b)=>a-b);const m=outLv[outLv.length>>1];outLv=[];if(d>=3&&hotTime<d*.4){goodLv.push(m);const g=[...goodLv].sort((a,b)=>a-b)[goodLv.length>>1];hotDb=Math.min(HOT_ABS,Math.max(g+12,floorDb+ON_DB+14));layoutMeter()}}
-  if(d>=3 && hotTime<d*.4){breaths++;cue(d>=5?"Beautiful. Breathe in through your nose.":"Good. Breathe in through your nose.",false,"")}
+  const H=mode==="hold";
+  if(d>=3 && hotTime<d*.4){breaths++;cue(d>=5?"Beautiful. Breathe in through your nose.":"Good. Breathe in through your nose.",false,H?"Then hold the circle again and breathe out.":"")}
   else if(hotTime>=d*.4){cue("Softer next time. Like fogging a window.",true,"")}
-  else if(d>=.6){cue("Slower. Let it last.",true,"A long, soft breath out, not a quick one.")}
+  else if(d>=.6){cue("Slower. Let it last.",true,H?"Keep holding for the whole long breath out.":"A long, soft breath out, not a quick one.")}
+  hint(H?"Breathe in":"");
 }
 // called every frame with dt (s), level 0..1 inside the meter, and flags
 function step(dt,t,on,hot){
   if(st==="wait"){
     if(on){startOut(t)}
-    else if(t-lastEnd>1800 || !lastEnd){cue("Breathe in through your nose…",false,lastEnd?"":"Then breathe out slowly toward the phone.");if(t-lastEnd>3800&&lastEnd)cue("Now breathe out, slowly…",false,"")}
+    else if(t-lastEnd>1800 || !lastEnd){
+      const H=mode==="hold";
+      if(lastEnd&&t-lastEnd>3800){cue(H?"Now hold the circle and breathe out, slowly…":"Now breathe out, slowly…",false,"");hint(H?"Hold here":"")}
+      else{cue("Breathe in through your nose…",false,lastEnd?"":H?"":"Then breathe out slowly toward the phone.");hint(H?(lastEnd?"Breathe in":"Hold here"):"")}
+    }
   }else{
     if(!on){endOut(t);return}
     const d=(t-outStart)/1000;
@@ -185,12 +207,13 @@ function step(dt,t,on,hot){
     const ramp=d<.8?0:Math.min(1,(d-.8)/2.2);
     if(ramp>0){prog=Math.min(1,prog+dt*ramp/GOAL);outGood+=dt;render(prog)}
     $("glow").classList.toggle("on",ramp>0);
-    cue(d<2?"Slowly…":d<5?"Keep going, softly…":"All the way out…",false,"");
+    cue(d<2?"Slowly…":d<5?"Keep going, softly…":"All the way out…",false,mode==="hold"?"Keep holding. Let go when your breath is out.":"");
+    hint(mode==="hold"?"Breathing out":"");
     if(prog>=.995)finish();
   }
 }
 function finish(){
-  stopAll();
+  stopAll();$("dial").classList.remove("held","wait-hold");hint("");
   $("glow").classList.remove("on");render(1);
   const n=Math.max(breaths+(st==="out"?1:0),1);
   $("doneP").textContent=`${NAMES[fnd]} opened with ${n} slow breath${n===1?"":"s"} out. Stay here for a moment before you go back to your day.`;
@@ -226,7 +249,7 @@ async function startMic(){
   src.connect(hp);hp.connect(an);
   buf=new Float32Array(an.fftSize);
   prog=0;breaths=0;st="wait";lastEnd=0;isOn=false;sm=-90;cal=[];hotDb=HOT_ABS;outLv=[];goodLv=[];render(0);layoutMeter();
-  $("meter").hidden=false;$("dbg").hidden=!DEBUG;show("vBreath");
+  $("meter").hidden=false;$("dbg").hidden=!DEBUG;$("howto").hidden=true;resetHold();show("vBreath");
   cue("Stay quiet for a moment…",false,"Listening to the room.");
   calEnd=performance.now()+1600;lastT=performance.now();
   raf=requestAnimationFrame(loop);
@@ -280,15 +303,19 @@ function noMic(e){
 let holding=false;
 function startHold(){
   stopAll();mode="hold";prog=0;breaths=0;st="wait";lastEnd=0;render(0);
-  $("meter").hidden=true;$("dbg").hidden=true;show("vBreath");
-  cue("Breathe in through your nose…",false,"Then touch and hold the circle while you breathe out slowly.");
+  $("meter").hidden=true;$("dbg").hidden=true;$("howto").hidden=false;show("vBreath");
+  $("dial").classList.add("holdable");
+  $("lede").textContent="Hold the circle while you breathe out, let go as you breathe in. The watercolour opens only for a slow breath out.";
+  cue("Breathe in through your nose…",false,"");hint("Hold here");
   lastT=performance.now();
   const tick=t=>{raf=requestAnimationFrame(tick);const dt=Math.min(.1,(t-lastT)/1000);lastT=t;if(mode==="hold")step(dt,t,holding,false)};
   raf=requestAnimationFrame(tick);
 }
 const dial=$("dial");
-dial.addEventListener("pointerdown",e=>{if(mode==="hold"&&!$("vBreath").hidden){holding=true;try{dial.setPointerCapture(e.pointerId)}catch(_){}e.preventDefault()}});
-["pointerup","pointercancel","lostpointercapture"].forEach(ev=>dial.addEventListener(ev,()=>{holding=false}));
+function resetHold(){$("dial").classList.remove("holdable","held","wait-hold");hint("");$("lede").textContent=LEDE}
+const LEDE=$("lede").textContent;
+dial.addEventListener("pointerdown",e=>{if(mode==="hold"&&!$("vBreath").hidden){holding=true;dial.classList.add("held");try{dial.setPointerCapture(e.pointerId)}catch(_){}e.preventDefault()}});
+["pointerup","pointercancel","lostpointercapture"].forEach(ev=>dial.addEventListener(ev,()=>{holding=false;dial.classList.remove("held")}));
 dial.addEventListener("contextmenu",e=>{if(mode==="hold")e.preventDefault()});
 
 /* ---------- buttons ---------- */
@@ -296,8 +323,8 @@ $("go").onclick=startMic;
 $("goHold").onclick=startHold;
 $("toHold").onclick=startHold;
 $("retry").onclick=startMic;
-$("stop").onclick=()=>{stopAll();mode=null;$("glow").classList.remove("on");prog=0;render(0);show("vStart")};
-$("again").onclick=()=>{mode=null;prog=0;render(0);const k=Object.keys(NAMES);setF(k[(k.indexOf(fnd)+1)%k.length]);show("vStart");scrollTo({top:0,behavior:"smooth"})};
+$("stop").onclick=()=>{stopAll();resetHold();mode=null;$("glow").classList.remove("on");prog=0;render(0);show("vStart")};
+$("again").onclick=()=>{mode=null;resetHold();prog=0;render(0);const k=Object.keys(NAMES);setF(k[(k.indexOf(fnd)+1)%k.length]);show("vStart");scrollTo({top:0,behavior:"smooth"})};
 document.addEventListener("visibilitychange",()=>{if(document.hidden&&mode==="mic"&&!$("vBreath").hidden){stopAll();mode=null;show("vStart")}});
 }
 </script>
