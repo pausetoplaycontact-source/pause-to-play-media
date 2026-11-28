@@ -137,7 +137,7 @@ function measure(which) {
       if (!demo) closeCam();
       vid.hidden = true; $("oval").hidden = true; $("wc").hidden = false; $("back").hidden = false;
       if (!e || e.q < .1) { msg("The signal was too faint to read. Try more light and keep very still.", true); $("readout").hidden = true; done(null); return; }
-      const bpm = Math.round(e.bpm); $("bpmLive").textContent = bpm + " bpm"; msg(""); done(bpm);
+      const bpm = Math.round(e.bpm); $("bpmLive").textContent = demo ? "-- bpm" : bpm + " bpm"; msg(""); done(bpm);
     };
     const tick = () => {
       if (!running) return;
@@ -154,7 +154,7 @@ function measure(which) {
       else if (noFace > 20) msg("Bring your face into the oval and hold still.", true);
       else if (t < WARM) msg("Hold still…");
       else msg(t < WARM + 6 ? "Reading your pulse. Breathe normally." : "Nearly there. Stay still.");
-      if (t - lastEst > .5 && t > WARM + 7) { lastEst = t; const e = estimate(samples, false); if (e) { drawWave(e.wave); $("bpmLive").textContent = e.q > .12 ? Math.round(e.bpm) + " bpm" : "-- bpm"; } }
+      if (t - lastEst > .5 && t > WARM + 7) { lastEst = t; const e = estimate(samples, false); if (e) { drawWave(e.wave); $("bpmLive").textContent = e.q > .12 && !demo ? Math.round(e.bpm) + " bpm" : "-- bpm"; } }
       if (t >= WARM + MEAS) { running = false; finish(); return; }
       if (vid.requestVideoFrameCallback && !demo) vid.requestVideoFrameCallback(tick); else requestAnimationFrame(tick);
     };
@@ -167,7 +167,7 @@ async function first() {
   step(1); const b = await measure(1);
   if (b === null && !$("vNoCam").hidden) return;
   if (b === null) { show("vStart"); return; }
-  res.b1 = b; $("b1").innerHTML = b + "<small> bpm</small>"; $("lede").textContent = "Your pulse before the pause. Now, the pause.";
+  res.b1 = b; $("b1").innerHTML = (demo ? "--" : b) + "<small> bpm</small>"; $("lede").textContent = "Your pulse before the pause. Now, the pause.";
   fillPauseCard(); show("vMid");
 }
 $("go").onclick = first;
@@ -199,6 +199,14 @@ $("go2").onclick = async () => { const b = await measure(2); if (b === null) { i
 
 function result() {
   const a = res.b1, b = res.b2, d = b - a;
+  ["cardImg", "share", "save"].forEach(k => $(k).hidden = demo);
+  if (demo) {
+    $("bRes").innerHTML = `-- <span style="color:#B8964F">→</span> --<small> bpm</small>`;
+    $("lede").textContent = "That was a demo.";
+    $("resWhy").textContent = "With your camera, your own before and after numbers appear here, with a card to keep.";
+    $("readout").hidden = true; $("wave").hidden = true; $("dial").hidden = true; $("steps").hidden = true; show("vResult"); msg("");
+    return;
+  }
   $("bRes").innerHTML = `${a} <span style="color:#B8964F">→</span> ${b}<small> bpm</small>`;
   $("lede").textContent = "Before and after your pause.";
   $("resWhy").textContent = d <= -2 ? `Your pulse slowed by ${-d} beats a minute. That's your body settling.` : d < 2 ? "Your pulse held steady. Calm doesn't always show as a lower number, and it still counts." : "Your pulse rose a little. That happens, deep breaths can lift it for a moment. Sit quietly for a minute and measure again.";
