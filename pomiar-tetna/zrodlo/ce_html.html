@@ -1,0 +1,79 @@
+<main class="app">
+  <h1 id="title">Measure <i>my</i> pause</h1>
+  <p class="lede" id="lede">See what two minutes of breathing do. Your camera reads your pulse for 20 seconds, before and after.</p>
+
+  <div class="steps" id="steps" aria-hidden="true"><span id="s1">Before</span><span id="s2">Pause</span><span id="s3">After</span></div>
+
+  <div class="dial" id="dial">
+    <svg class="ring" viewBox="0 0 200 200" aria-hidden="true">
+      <defs><linearGradient id="gg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F6E7BC"/><stop offset=".42" stop-color="#C9A15A"/><stop offset=".68" stop-color="#ECD79F"/><stop offset="1" stop-color="#A47A38"/></linearGradient></defs>
+      <circle cx="100" cy="100" r="96" fill="none" stroke="#DCD4C4" stroke-width=".6"/>
+      <g id="ticks" stroke="#B8964F" stroke-linecap="round"></g>
+      <circle id="prog" cx="100" cy="100" r="92" fill="none" stroke="url(#gg)" stroke-width="2.4" stroke-linecap="round" pathLength="100" stroke-dasharray="0 100" transform="rotate(-90 100 100)"/>
+    </svg>
+    <div class="lens" id="lens">
+      <img class="wc" id="wc" alt="" crossorigin="anonymous">
+      <video id="vid" playsinline muted hidden></video>
+      <div class="oval" id="oval" hidden></div>
+      <div class="breath" id="breath" hidden><i id="orb"></i></div>
+    </div>
+    <div class="readout" id="readout" hidden><b id="bpmLive">-- bpm</b></div>
+  </div>
+
+  <canvas class="wave" id="wave" hidden aria-hidden="true"></canvas>
+  <p class="msg" id="msg" aria-live="polite"></p>
+
+  <section id="vStart">
+    <div class="mode" role="group" aria-label="How to measure">
+      <button id="mFace" aria-pressed="true">Face</button>
+      <button id="mFinger" aria-pressed="false">Fingertip</button>
+    </div>
+    <ul class="tips" id="tipsFace">
+      <li>Sit by a window or under a soft, even light.</li>
+      <li>Hold the phone at eye level, face inside the oval.</li>
+      <li>Stay still and quiet for 20 seconds.</li>
+    </ul>
+    <ul class="tips" id="tipsFinger" hidden>
+      <li>Rest your fingertip lightly over the back camera.</li>
+      <li>Cover the lens fully. The light turns on if your phone allows.</li>
+      <li>Don't press hard. Stay still for 20 seconds.</li>
+    </ul>
+    <div class="row"><button class="btn" id="go">Measure my pulse</button></div>
+    <p class="fine">Your camera image never leaves your device. Nothing is recorded, saved or sent. A wellbeing reading, indicative only, not a medical measurement.</p>
+  </section>
+
+  <section id="vMid" hidden>
+    <div class="big" id="b1">--<small> bpm</small></div>
+    <div class="pc"><p class="k" id="pcK">Your pause</p><h3 id="pcT"></h3></div>
+    <div class="row"><button class="btn" id="startPause">Begin the pause</button></div>
+  </section>
+
+  <section id="vPause" class="pause" hidden>
+    <h2 id="pT"></h2>
+    <p class="cue" id="cue"></p>
+    <ol class="psteps" id="pSteps"></ol>
+    <p class="timer" id="ptime">2:00</p>
+    <div class="row"><button class="btn ghost" id="skip">I'm done, measure now</button></div>
+  </section>
+
+  <section id="vReady2" hidden>
+    <p class="lede">Beautiful. Stay as you are, and let's see.</p>
+    <div class="row"><button class="btn" id="go2">Measure again</button></div>
+  </section>
+
+  <section id="vResult" hidden>
+    <div class="big" id="bRes"></div>
+    <p class="why" id="resWhy"></p>
+    <img class="card" id="cardImg" alt="Your pause card">
+    <div class="row"><button class="btn" id="share">Share my card</button><a class="btn ghost" id="save" download="my-pause.png" href="#">Save image</a></div>
+    <div class="row"><button class="btn ghost" id="again">Start over</button></div>
+    <p class="fine">Indicative only. Camera readings vary with light and movement. Not a medical device and not for diagnosis.</p>
+  </section>
+
+  <section id="vNoCam" hidden>
+    <p class="lede" id="noCamText">This page can't use the camera here.</p>
+    <div class="row"><button class="btn" id="demo">See a demo</button><button class="btn ghost" id="retry">Try again</button></div>
+  </section>
+
+  <a class="back" id="back" href="/">Back to today's pause</a>
+</main>
