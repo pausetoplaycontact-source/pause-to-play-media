@@ -43,7 +43,7 @@ h1 i{font-weight:400;color:var(--gold-ink)}
 .btn:focus-visible,.link:focus-visible{outline:1px solid var(--gold-ink);outline-offset:4px}
 .row{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:20px}
 .link{background:none;border:0;font:300 15px var(--body);color:var(--gold-ink);text-decoration:underline;text-underline-offset:4px;cursor:pointer;margin-top:12px;padding:8px}
-.pose{display:block;width:min(78vw,300px);margin:6px auto 0}
+.pose{display:block;width:min(88vw,380px);margin:4px auto 0}
 .howto{list-style:none;counter-reset:h;padding:0;margin:14px auto 0;max-width:33ch;text-align:left;font-size:15px;color:var(--soft)}
 .howto li{counter-increment:h;padding:8px 0 8px 36px;position:relative;border-top:1px solid var(--rule)}
 .howto li::before{content:counter(h);position:absolute;left:2px;top:9px;width:22px;height:22px;border:1px solid var(--gold);border-radius:50%;font:400 12px/21px var(--body);text-align:center;color:var(--gold-ink)}
@@ -92,15 +92,39 @@ h1 i{font-weight:400;color:var(--gold-ink)}
 
   <!-- start -->
   <section id="vStart">
-    <svg class="pose" viewBox="0 0 300 150" fill="none" stroke="#B8964F" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Drawing: arm stretched straight out in front, phone lying flat on the open palm">
-      <circle cx="58" cy="30" r="13"/>
-      <path d="M58 43 L58 112 M58 112 L46 146 M58 112 L70 146"/>
-      <path d="M58 58 L196 58" stroke-width="2"/>
-      <path d="M196 58 C204 58 214 57 222 58" />
-      <rect x="196" y="49" width="40" height="6" rx="2" fill="#FBF9F4" stroke="#7E632E" stroke-width="1.4"/>
-      <path d="M248 40 l6 -4 M250 50 h7 M248 60 l6 4" stroke="#C6CAB0" stroke-width="1.2"/>
-      <path d="M58 58 L40 92" stroke="#DCD4C4"/>
-    </svg>
+    <svg class="pose" viewBox="0 0 320 140" fill="none" stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Drawing: an arm stretched out, palm up, with the phone lying flat on the open hand">
+  <defs><linearGradient id="hg" x1="0" y1="0" x2="1" y2=".3"><stop offset="0" stop-color="#C9A15A"/><stop offset=".55" stop-color="#A47A38"/><stop offset="1" stop-color="#7E632E"/></linearGradient></defs>
+  <g stroke="url(#hg)" stroke-width="1.35" fill="#FBF9F4">
+    <!-- forearm and hand, one form -->
+    <path d="M48 72 C76 75 104 80 128 85 C136 83 142 81 150 80 L252 80 C262 80 270 80 274 82 C277 84 275 88 270 89 C258 92 242 96 226 99 C206 103 186 105 166 106 C152 107 142 106 132 104 C106 106 80 108 50 112 Z"/>
+    <!-- sleeve -->
+    <path d="M8 66 C24 62 40 62 50 66 C56 80 56 100 52 116 C38 120 22 120 6 117"/>
+    <path d="M50 66 C46 82 46 100 52 116" stroke-width=".9"/>
+    <circle cx="44" cy="76" r="1.6" stroke-width=".9"/>
+  </g>
+  <!-- phone lying flat, screen up -->
+  <g stroke="#7E632E" stroke-width="1.25">
+    <path d="M148 79 L246 79 C250 79 253 78 255 76 L270 62 L270 55 L156 55 L142 69 L142 74 C142 77 144 79 148 79 Z" fill="#F4EFE5"/>
+    <path d="M148 72 L246 72 C250 72 253 71 255 69 L268 57 C271 54 270 52 266 52 L166 52 C162 52 160 53 158 55 L144 68 C141 71 143 72 148 72 Z" fill="#FBF9F4"/>
+    <path d="M154 69.5 L245 69.5 L262 54.5 L171 54.5 Z" stroke="#C9A15A" stroke-width=".7" fill="#F6F1E6"/>
+  </g>
+  <g stroke="url(#hg)" stroke-width="1.35" fill="#FBF9F4">
+    <!-- fingertips resting past the phone -->
+    <path d="M250 88 C258 88 264 87 268 87 C272 87 273 90 270 91 C264 93 256 93 248 93"/>
+    <path d="M252 84 C260 84 268 83 273 83 C277 83 278 86 275 87.5 C268 89 260 89 252 89"/>
+    <path d="M252 80 C260 80 268 79 274 79 C278.5 79 279.5 82 276 83.5 C269 85 260 85 252 85"/>
+    <!-- thumb resting lightly on the phone's edge -->
+    <path d="M140 96 C150 90 160 84 172 79 C178 76 186 75 189 77 C191 79 189 81 185 82 C176 85 166 91 156 99"/>
+    <path d="M184 77.5 C186 78 187 79 186 80.5" stroke-width=".8" fill="none"/>
+  </g>
+  <path d="M132 88 C131 93 131 98 132 102" stroke="#B8964F" stroke-width=".8"/>
+  <!-- the fine tremor -->
+  <g stroke="#C6CAB0" stroke-width="1.1">
+    <path d="M288 58 C292 62 292 68 288 72"/>
+    <path d="M296 53 C302 60 302 70 296 77"/>
+  </g>
+  <path d="M8 128 H312" stroke="#DCD4C4" stroke-width=".8" stroke-dasharray="2 5"/>
+</svg>
     <ol class="howto">
       <li><b>Stretch one arm straight out</b> in front of you, at shoulder height. Sit or stand tall.</li>
       <li><b>Lay the phone flat on your open palm,</b> screen up. Don't grip it, just let it rest.</li>
